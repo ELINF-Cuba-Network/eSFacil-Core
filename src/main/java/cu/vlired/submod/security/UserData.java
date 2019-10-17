@@ -1,30 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cu.vlired.submod.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import cu.vlired.submod.model.Role;
 import cu.vlired.submod.model.User;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- *
- * @author luizo
- */
+@Setter @Getter
+public class UserData implements UserDetails {
 
-public class UserData implements UserDetails{
-    private Long id;
+    private UUID id;
 
     private String lastName;
 
@@ -40,7 +31,15 @@ public class UserData implements UserDetails{
     
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserData(Long id, String firstName, String lastName, String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    UserData(
+        UUID id,
+        String firstName,
+        String lastName,
+        String username,
+        String email,
+        String password,
+        Collection<? extends GrantedAuthority> authorities
+    ) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -50,46 +49,20 @@ public class UserData implements UserDetails{
         this.authorities = authorities;
     }
 
-        public static UserData create(User user) {
+     static UserData create(User user) {
         List<GrantedAuthority> authorities = new LinkedList<>();
        
         authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
          
         return new UserData(
-                user.getId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPassword(),
-                authorities
+            user.getId(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getUsername(),
+            user.getEmail(),
+            user.getPassword(),
+            authorities
         );
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-            return lastName;
-        }
-
-    public String getEmail() {
-        return email;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
     }
 
     @Override

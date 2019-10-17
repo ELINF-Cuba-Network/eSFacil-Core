@@ -1,24 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cu.vlired.submod.repository;
 
 import cu.vlired.submod.model.User;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-
-/**
- *
- * @author luizo
- */
 public interface UserRepository extends JpaRepository<User, Long>{
     
     List<User> findAll();
@@ -42,8 +34,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
     Optional<User> findByUsernameOrEmail(String username, String email);
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
-    Optional<User> findById(Long id);
-
-    
+    Optional<User> findById(UUID id);
 }
 

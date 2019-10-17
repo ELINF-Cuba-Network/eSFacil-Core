@@ -8,11 +8,13 @@ package cu.vlired.submod.services;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.*;
 
 @Service
-public class DarkaivService {
+public class DarkaivMetadataResolverImp implements MetadataResolver {
 
     private static final String PATH = "/document/workflow/test2";
 
@@ -21,25 +23,21 @@ public class DarkaivService {
 
     private RestTemplate restTemplate;
 
-    public DarkaivService(RestTemplate restTemplate) {
+    public DarkaivMetadataResolverImp(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    public Map<String, List<String>> getMetadataFromFile() {
+    @Override
+    public Map<String, List<String>> getMetadataFromFile(MultipartFile file) {
 
         // TODO: Change this when Darkaiv works
         // Map resp = restTemplate.getForObject(dir_darkaiv + PATH, HashMap.class);
 
-        Map<String, List<String>> resp = new HashMap<>();
-
-        List<String> al = Arrays.asList("de Tobias, El Bueno", "Hdez, Jose Javier");
-        List<String> tl = Arrays.asList("Titulo 1", "Titulo 2");
-
-        resp.put("title", tl);
-        resp.put("author", al);
-
-        return resp;
-
+        return new HashMap<>();
     }
 
+    @Override
+    public Map<String, List<String>> processResponse(Object data) {
+        return null;
+    }
 }

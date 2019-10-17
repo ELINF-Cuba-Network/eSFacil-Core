@@ -5,15 +5,11 @@
  */
 package cu.vlired.submod.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import cu.vlired.submod.components.PaginationHelper;
 import cu.vlired.submod.components.ResponsesHelper;
 import cu.vlired.submod.exception.ResourceAlreadyTakenException;
 import cu.vlired.submod.exception.ResourceNotFoundException;
-import cu.vlired.submod.model.Page;
 import cu.vlired.submod.model.PagedData;
-import cu.vlired.submod.model.Role;
 import cu.vlired.submod.model.User;
 import cu.vlired.submod.payload.UserExistRequest;
 import cu.vlired.submod.payload.SignInRequest;
@@ -27,9 +23,7 @@ import cu.vlired.submod.security.CurrentUser;
 import cu.vlired.submod.security.JwtTokenProvider;
 import cu.vlired.submod.security.UserData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -217,7 +211,7 @@ public class UserApiController implements UserApi{
     public ResponseEntity<?> existUserByUsername(@RequestBody UserExistRequest request) {
 
         String username = request.getUsername();
-        long id = request.getId();
+        UUID id = request.getId();
         System.out.println(id);
 
         System.out.println("Getting user with username "+username);
@@ -231,7 +225,7 @@ public class UserApiController implements UserApi{
     public ResponseEntity<?> existUserByEmail(@RequestBody UserExistRequest request) {
 
         String email = request.getEmail();
-        long id = request.getId();
+        UUID id = request.getId();
 
         System.out.println("Getting user with email "+email);
         Optional<User> user = userRepository.findByEmail(email);

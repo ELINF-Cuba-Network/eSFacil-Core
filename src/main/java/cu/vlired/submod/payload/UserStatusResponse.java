@@ -7,15 +7,17 @@ package cu.vlired.submod.payload;
 
 import cu.vlired.submod.model.User;
 import cu.vlired.submod.model.Role;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-/**
- *
- * @author luizo
- */
+import java.util.UUID;
+
+@Setter @Getter
+@ToString
 public class UserStatusResponse {
 
-    private Long id;
-
+    private UUID id;
     private String username;
     private String firstName;
     private String lastName;
@@ -31,67 +33,9 @@ public class UserStatusResponse {
         usr.setFirstName( user.getFirstName() );
         usr.setLastName( user.getLastName() );
         usr.setEmail( user.getEmail() );
-        usr.setIsActive( user.isActive() );
+        usr.setActive( user.isActive() );
         usr.setRole( user.getRole() );
 
         return usr;
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public boolean isIsActive() {
-        return isActive;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-    
-    
 }

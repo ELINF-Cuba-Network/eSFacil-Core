@@ -6,17 +6,17 @@ import cu.vlired.submod.components.ResponsesHelper;
 import cu.vlired.submod.constants.Condition;
 import cu.vlired.submod.model.Bitstream;
 import cu.vlired.submod.model.Document;
-import cu.vlired.submod.model.MetadataValue;
 import cu.vlired.submod.repository.DocumentRepository;
 import cu.vlired.submod.services.BitstreamService;
-import cu.vlired.submod.services.DarkaivService;
+import cu.vlired.submod.services.DarkaivMetadataResolverImp;
+import cu.vlired.submod.services.MetadataResolver;
 import cu.vlired.submod.services.XMLService;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,23 +35,23 @@ public class FilesApiController implements FilesApi {
     private BitstreamService bitstreamService;
     private XMLService xmlService;
     private ResponsesHelper responseHelper;
-    private DarkaivService darkaivService;
+    private MetadataResolver metadataResolver;
     private DocumentRepository documentRepository;
 
     @Value("${dir.config}")
     private String dir_config;
 
     public FilesApiController(
-        BitstreamService bitstreamService,
-        XMLService xmlService,
-        ResponsesHelper responseHelper,
-        DarkaivService darkaivService,
-        DocumentRepository documentRepository
+            BitstreamService bitstreamService,
+            XMLService xmlService,
+            ResponsesHelper responseHelper,
+            MetadataResolver metadataResolver,
+            DocumentRepository documentRepository
     ) {
         this.bitstreamService = bitstreamService;
         this.xmlService = xmlService;
         this.responseHelper = responseHelper;
-        this.darkaivService = darkaivService;
+        this.metadataResolver = metadataResolver;
         this.documentRepository = documentRepository;
     }
 
@@ -85,45 +85,13 @@ public class FilesApiController implements FilesApi {
 
         // Create a bitstream using the file
         Bitstream bitstream = bitstreamService.createBitstreamFromFile(file);
-        Map<String, List<String>> jsonCsl = new HashMap<>();
 
         // Getting the bitstream metadata from Darkaiv
-        Map<String, List<String>> jsonDarkaiv = darkaivService.getMetadataFromFile();
-
-        // I need to Map the Darkaiv response to a CSL format
-        // mapData has the darkaiv key to => CSL key
-        byte[] mapData = Files.readAllBytes(
-            Paths.get(dir_config, "DarkaivApiToCSLMap.json")
-        );
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, String> jsonConfigMap = 
-                objectMapper.readValue(mapData, new TypeReference<Map<String, String>>() {});
-
-        for (Map.Entry<String, String> entrySet : jsonConfigMap.entrySet()) {
-            
-            String keyCSL = entrySet.getKey();
-            String valueDarkaivApi = entrySet.getValue();
-
-            List<String> list = jsonDarkaiv.get(valueDarkaivApi);
-            jsonCsl.put(keyCSL, list);
-        }
-
-        /* NI IDEA DE Q HACE ESTO
-        // Add identifiers
-        HashMap<String, Object> identifiers = new HashMap<>();
-         identifiers = (HashMap<String, Object>) jsonDarkaiv.get("identifiers");
-         if (identifiers.get("type").equals("doi")) {
-            jsonCsl.put("DOI", identifiers.get("value"));
-        }
-        if (identifiers.get("type").equals("isbn")) {
-           jsonCsl.put("ISBN", identifiers.get("value"));
-        }
-        */
+        Map<String, List<String>> jsonDarkaiv = metadataResolver.getMetadataFromFile(file);
 
         // Create the document
         Document doc = new Document();
-        doc.setData(jsonCsl);
+        doc.setData(jsonDarkaiv);
         doc.addBitstream(bitstream);
 
         // By default when submit a new file is in process
