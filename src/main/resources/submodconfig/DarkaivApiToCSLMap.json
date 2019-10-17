@@ -1,0 +1,14 @@
+{
+    "issue":"issue",
+    "title":"title",
+    "author":"author",
+    "publisher": "publisher",
+    "DOI":"DOI",
+    "type":"type",
+    "volume":"volume",
+    "container-title":"container-title",
+    "ISSN":"ISSN",
+    "issued":"year",
+    "identifiers":"identifiers",
+    "subject":"key_words"
+}

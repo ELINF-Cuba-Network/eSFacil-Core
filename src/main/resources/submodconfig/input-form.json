@@ -1,0 +1,103 @@
+{
+        "data":
+	[
+		{
+		"blockname":"Datos principales",
+		"fields":[
+				{
+					"cslfield" : "title",
+					"label" : "Título",
+					"help" : "Entre el Título",
+					"repeatable" : "false",
+					"required" : "true",
+					"fieldtype" : "onebox",
+	                "workflow" : "false"
+				},
+				{
+					"cslfield" : "author",
+					"label" : "Autor",
+					"help" : "Entre el Autor",
+					"repeatable" : "true",
+					"required" : "true",
+					"fieldtype" : "author",
+                    "workflow" : "false"
+				},
+				{
+					"cslfield" : "page",
+					"label" : "Página",
+					"help" : "Entre las páginas",
+					"repeatable" : "false",
+					"required" : "false",
+					"fieldtype" : "onebox",
+	                "workflow" : "true"
+				}
+			]
+		},
+		{
+		"blockname":"Datos secundarios",
+		"fields":[
+				{
+				"cslfield" : "abstract",
+				"label" : "Descripcion",
+				"help" : "Entre la descripcion del documento",
+				"repeatable" : "false",
+				"required" : "false",
+				"fieldtype" : "onebox",
+                                "workflow" : "false"
+				},
+				{
+				"cslfield" : "keyword",
+				"label" : "Palabra clave",
+				"help" : "Entre las palabras clave",
+				"repeatable" : "true",
+				"required" : "false",
+				"fieldtype" : "vocabulary",
+                                "workflow" : "false"
+				},
+                                {
+				"cslfield" : "type",
+				"label" : "Tipo",
+				"help" : "Seleccione el tipo de documento",
+				"repeatable" : "false",
+				"required" : "false",
+				"fieldtype" : "select",
+                                "workflow" : "false",
+                                "values" : [{"art" : "article"}, {"th" : "thesis"} , { "bk" : "book"}]
+				}
+			]
+		},
+		{
+		"blockname":"Datos extras",
+		"fields":[
+				{
+				"cslfield" : "abstract",
+				"label" : "Descripcion",
+				"help" : "Entre la descripcion del documento",
+				"repeatable" : "false",
+				"required" : "false",
+				"fieldtype" : "onebox",
+                                "workflow" : "false"
+				},
+				{
+				"cslfield" : "keyword",
+				"label" : "Palabra clave",
+				"help" : "Entre las palabras clave",
+				"repeatable" : "true",
+				"required" : "false",
+				"fieldtype" : "vocabulary",
+                                "workflow" : "false"
+				},
+                                {
+				"cslfield" : "type",
+				"label" : "Tipo",
+				"help" : "Seleccione el tipo de documento",
+				"repeatable" : "false",
+				"required" : "false",
+				"fieldtype" : "select",
+                                "workflow" : "false",
+                                "values" : [{"art" : "article"}, {"th" : "thesis"} , { "bk" : "book"}]
+				}
+			]
+		}
+	]
+}

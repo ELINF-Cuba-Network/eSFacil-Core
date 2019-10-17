@@ -1,0 +1,13 @@
+{
+    "issue":"issue",
+    "status":"status",
+    "title":"title",
+    "author":"author",
+    "publisher": "publisher",
+    "DOI":"DOI",
+    "type":"type",
+    "volume":"volume",
+    "container-title":"container-title",
+    "ISSN":"ISSN",
+    "issued":"issued"
+}
