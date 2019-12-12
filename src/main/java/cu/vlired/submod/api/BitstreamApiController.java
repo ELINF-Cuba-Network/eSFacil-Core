@@ -6,7 +6,10 @@ import cu.vlired.submod.repository.BitstreamRepository;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,12 +25,13 @@ public class BitstreamApiController implements BitstreamApi {
 
     @Value("${dir.assetstore}")
     private String dir_assetstore;
+
     private BitstreamRepository bitstreamRepository;
     private ResponsesHelper responseHelper;
 
     public BitstreamApiController(
-        BitstreamRepository bitstreamRepository,
-        ResponsesHelper responseHelper
+            BitstreamRepository bitstreamRepository,
+            ResponsesHelper responseHelper
     ) {
         this.bitstreamRepository = bitstreamRepository;
         this.responseHelper = responseHelper;
@@ -47,6 +51,21 @@ public class BitstreamApiController implements BitstreamApi {
         bitstream.setName(Dir_File);
         Bitstream saveBitstream = bitstreamRepository.save(bitstream);
         return responseHelper.buildResponse(saveBitstream, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<Bitstream>> batchCreateBitstream(Bitstream[] bitstream) {
+        System.out.println("...");
+        List<Bitstream> result = new LinkedList<>();
+        Arrays.stream(bitstream).forEach(b -> result.add(bitstreamRepository.save(b)));
+
+        return responseHelper.ok(result);
+    }
+
+    @Override
+    public ResponseEntity<?> batchDeleteBitstream(String[] ids) {
+        Arrays.stream(ids).forEach(b -> bitstreamRepository.deleteById(UUID.fromString(b)));
+        return responseHelper.okNoData();
     }
 
     @Override

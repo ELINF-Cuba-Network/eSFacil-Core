@@ -28,7 +28,7 @@ public class DarkaivMetadataResolverImp implements MetadataResolver {
     }
 
     @Override
-    public Map<String, List<String>> getMetadataFromFile(MultipartFile file) {
+    public Map<Object, Object> getMetadataFromFile(MultipartFile file) {
 
         // TODO: Change this when Darkaiv works
         // Map resp = restTemplate.getForObject(dir_darkaiv + PATH, HashMap.class);
@@ -37,7 +37,7 @@ public class DarkaivMetadataResolverImp implements MetadataResolver {
     }
 
     @Override
-    public Map<String, List<String>> processResponse(Object data) {
+    public Map<Object, Object> processResponse(Object data) {
         return null;
     }
 }

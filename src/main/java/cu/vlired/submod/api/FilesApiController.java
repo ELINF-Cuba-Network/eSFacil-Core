@@ -87,7 +87,7 @@ public class FilesApiController implements FilesApi {
         Bitstream bitstream = bitstreamService.createBitstreamFromFile(file);
 
         // Getting the bitstream metadata from Darkaiv
-        Map<String, List<String>> jsonDarkaiv = metadataResolver.getMetadataFromFile(file);
+        Map<Object, Object> jsonDarkaiv = metadataResolver.getMetadataFromFile(file);
 
         // Create the document
         Document doc = new Document();

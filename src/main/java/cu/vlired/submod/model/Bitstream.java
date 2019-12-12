@@ -11,7 +11,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "bitstream")
 @Getter @Setter
-public class Bitstream  extends BaseEntity {
+public class Bitstream extends BaseEntity {
 
     @Id
     @Column(name = "bitstream_id")
@@ -22,7 +22,7 @@ public class Bitstream  extends BaseEntity {
 
     @Column(name = "bitstream_extension")
     private String extension;
-   
+
     @JsonIgnore
     @Column(name = "bitstream_code")
     private String code;
@@ -31,8 +31,13 @@ public class Bitstream  extends BaseEntity {
     @JoinColumn(name = "document_id")
     @JsonBackReference
     private Document document;
-    
+
     public Bitstream() {
+    }
+
+    public Bitstream(String name, String extension) {
+        this.name = name;
+        this.extension = extension;
     }
 
     public Bitstream(String name, String extension, String code) {

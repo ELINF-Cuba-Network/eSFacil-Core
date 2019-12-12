@@ -19,7 +19,7 @@ public interface MetadataResolver {
      * @param file File to extract metadata
      * @return Map with Metadata => [...values]
      */
-    public Map<String, List<String>> getMetadataFromFile(MultipartFile file);
+    public Map<Object, Object> getMetadataFromFile(MultipartFile file);
 
     /**
      * Process a response for a external metadata extractor service
@@ -28,6 +28,6 @@ public interface MetadataResolver {
      * @param data The raw metadata taken from a generic source e.x: Darkaiv
      * @return Map with Metadata => [...values]
      */
-    public Map<String, List<String>> processResponse(Object data);
+    public Map<Object, Object> processResponse(Object data);
 
 }

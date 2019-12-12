@@ -26,7 +26,7 @@ public class Document extends BaseEntity {
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
-    private Map<String, List<String>> data;
+    private Map<Object, Object> data;
 
     @OneToMany(
         mappedBy = "document",

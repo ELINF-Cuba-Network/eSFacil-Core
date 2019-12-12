@@ -8,10 +8,12 @@ package cu.vlired.submod.repository;
 import cu.vlired.submod.model.Bitstream;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.UUID;
+
 /**
  *
  * @author luizo
  */
-public interface BitstreamRepository extends JpaRepository<Bitstream, Long>{
+public interface BitstreamRepository extends JpaRepository<Bitstream, UUID>{
     
 }
