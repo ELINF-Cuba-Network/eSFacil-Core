@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cu.vlired</groupId>
-    <artifactId>submod</artifactId>
+    <artifactId>es-facil-core</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>submod</name>
-    <description>Demo project for Spring Boot</description>
+    <name>EsFacil Core</name>
+    <description>Es Facil Core Services</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
