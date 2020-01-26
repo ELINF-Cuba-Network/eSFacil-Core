@@ -31,7 +31,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
             
     List<User> paginateWithSearch(@Param("pattern") String pattern, Pageable pageable);
      
-    Optional<User> findByUsernameOrEmail(String username, String email);
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
     Optional<User> findById(UUID id);

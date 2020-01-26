@@ -61,37 +61,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-            .cors()
-            .and()
-            .csrf()
-            .disable()
-            .exceptionHandling()
-            .authenticationEntryPoint(unauthorizedHandler)
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeRequests()
-            .antMatchers("/**")
-            .permitAll()
-            .antMatchers("/",
-                    "/favicon.ico",
-                    "/**/*.png",
-                    "/**/*.gif",
-                    "/**/*.svg",
-                    "/**/*.jpg",
-                    "/**/*.html",
-                    "/**/*.css",
-                    "/**/*.js")
-            .permitAll()
-            .antMatchers("/auth/**")
-            .permitAll()
-            .antMatchers("/v2/api-docs", "/configuration/**", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/api-docs/**", "/document/**", "/documents", "/jsonbydoi", "/files-api-controller/**", "/createdocumentfromfile")
-            .permitAll()
-            .antMatchers(HttpMethod.GET, "/console/**")
-            .permitAll()
-            .anyRequest()
-            .authenticated();
+                .cors()
+                .and()
+                .csrf()
+                .disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(unauthorizedHandler)
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/**")
+                .permitAll()
+                .antMatchers("/",
+                        "/favicon.ico",
+                        "/**/*.png",
+                        "/**/*.gif",
+                        "/**/*.svg",
+                        "/**/*.jpg",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js")
+                .permitAll()
+                .antMatchers("/auth/**")
+                .permitAll()
+                .antMatchers("/v2/api-docs", "/configuration/**", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/api-docs/**", "/document/**", "/documents", "/jsonbydoi", "/files-api-controller/**", "/createdocumentfromfile")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/console/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated();
 
         // Add our custom JWT security filter
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

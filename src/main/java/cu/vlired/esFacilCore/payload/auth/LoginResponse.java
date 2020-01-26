@@ -1,10 +1,12 @@
-package cu.vlired.esFacilCore.payload;
+package cu.vlired.esFacilCore.payload.auth;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 @Setter @Getter @ToString
-public class UserStatusRequest {
+public class LoginResponse {
+
     private String token;
+
 }

@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cu.vlired.esFacilCore.security;
 
 import cu.vlired.esFacilCore.model.User;
 import cu.vlired.esFacilCore.repository.UserRepository;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,38 +10,38 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.UUID;
 
-
-/**
- *
- * @author luizo
- */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
+    final
     UserRepository userRepository;
+
+    public CustomUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     @Transactional
-    public UserData loadUserByUsername(String usernameOrEmail)
+    public User loadUserByUsername(String email)
             throws UsernameNotFoundException {
-        // Let people login with either username or email
-        User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException("No existe el usuario : " + usernameOrEmail)
+                        new UsernameNotFoundException("No existe el usuario : " + email)
                 );
 
-        return UserData.create(user);
+        return user;
     }
 
     // This method is used by JWTAuthenticationFilter
     @Transactional
-    public UserDetails loadUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new UsernameNotFoundException("No existe el usuario con id : " + id)
-        );
+    public UserDetails loadUserById(UUID id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("No existe el usuario con id : " + id)
+                );
 
-        return UserData.create(user);
+        return user;
     }
 }

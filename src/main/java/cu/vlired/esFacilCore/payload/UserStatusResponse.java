@@ -1,16 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cu.vlired.esFacilCore.payload;
 
 import cu.vlired.esFacilCore.model.User;
-import cu.vlired.esFacilCore.model.Role;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
 import java.util.UUID;
 
 @Setter @Getter
@@ -23,7 +18,7 @@ public class UserStatusResponse {
     private String lastName;
     private String email;
     private boolean isActive;
-    private Role role;
+    private List<String> roles;
 
     public static UserStatusResponse create(User user ){
 
@@ -34,7 +29,7 @@ public class UserStatusResponse {
         usr.setLastName( user.getLastName() );
         usr.setEmail( user.getEmail() );
         usr.setActive( user.isActive() );
-        usr.setRole( user.getRole() );
+        usr.setRoles( user.getRoles() );
 
         return usr;
     }

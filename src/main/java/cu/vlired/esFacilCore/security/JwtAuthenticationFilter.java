@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cu.vlired.esFacilCore.security;
 
 import cu.vlired.esFacilCore.exception.TokenExpiredException;
@@ -19,11 +14,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.UUID;
 
-/**
- *
- * @author luizo
- */
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -43,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwt = getJwtFromRequest(request);
 
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                Long userId = tokenProvider.getUserIdFromJWT(jwt);
+                UUID userId = tokenProvider.getUserIdFromJWT(jwt);
 
                 UserDetails userDetails = customUserDetailsService.loadUserById(userId);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
