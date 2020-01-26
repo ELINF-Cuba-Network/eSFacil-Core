@@ -28,7 +28,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("cu.vlired.submod"))
+                .apis(RequestHandlerSelectors.basePackage("cu.vlired.esFacilCore"))
                 .build()
                 .apiInfo(
                     new ApiInfo(
@@ -36,8 +36,8 @@ public class SwaggerConfig {
                         "Deposit Module for DSpace",
                         "0.1",
                         "",
-                        new Contact("Jose Javier Hdez", "vlired.cu", "jjbenitez@uci.cu"),
-                        "licenseName",
+                        new Contact("Jose Javier Hernández Benítez", "vlired.cu", "jjbenitez@uci.cu"),
+                        "GPL",
                         "licenseWebsite",
                         Collections.emptyList()
                     )

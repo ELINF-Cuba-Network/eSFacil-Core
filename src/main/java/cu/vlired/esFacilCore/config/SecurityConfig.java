@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cu.vlired.esFacilCore.config;
 
 import cu.vlired.esFacilCore.security.CustomUserDetailsService;
@@ -24,10 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-/**
- *
- * @author luizo
- */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -68,42 +59,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
-                .cors()
-                .and()
-                .csrf()
-                .disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(unauthorizedHandler)
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/**")    
-                .permitAll()
-                .antMatchers("/",
-                        "/favicon.ico",
-                        "/**/*.png",
-                        "/**/*.gif",
-                        "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js")
-                .permitAll()
-                .antMatchers("/auth/**")    
-                .permitAll()
-                .antMatchers("/v2/api-docs","/configuration/**","/swagger-resources/**","/swagger-ui.html","/webjars/**","/api-docs/**","/document/**","/documents", "/jsonbydoi", "/files-api-controller/**", "/createdocumentfromfile")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/console/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated();
+            .cors()
+            .and()
+            .csrf()
+            .disable()
+            .exceptionHandling()
+            .authenticationEntryPoint(unauthorizedHandler)
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeRequests()
+            .antMatchers("/**")
+            .permitAll()
+            .antMatchers("/",
+                    "/favicon.ico",
+                    "/**/*.png",
+                    "/**/*.gif",
+                    "/**/*.svg",
+                    "/**/*.jpg",
+                    "/**/*.html",
+                    "/**/*.css",
+                    "/**/*.js")
+            .permitAll()
+            .antMatchers("/auth/**")
+            .permitAll()
+            .antMatchers("/v2/api-docs", "/configuration/**", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/api-docs/**", "/document/**", "/documents", "/jsonbydoi", "/files-api-controller/**", "/createdocumentfromfile")
+            .permitAll()
+            .antMatchers(HttpMethod.GET, "/console/**")
+            .permitAll()
+            .anyRequest()
+            .authenticated();
 
         // Add our custom JWT security filter
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
     }
 
 }

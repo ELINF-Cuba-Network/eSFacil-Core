@@ -38,12 +38,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- * @author luizo
- */
 @RestController
-public class UserApiController implements UserApi{
+public class UserApiController implements UserApi {
 
     @Autowired
     AuthenticationManager authenticationManager;
