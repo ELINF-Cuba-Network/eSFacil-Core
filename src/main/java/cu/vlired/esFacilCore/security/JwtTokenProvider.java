@@ -1,6 +1,7 @@
 package cu.vlired.esFacilCore.security;
 
 import cu.vlired.esFacilCore.exception.TokenExpiredException;
+import cu.vlired.esFacilCore.model.User;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -20,7 +21,7 @@ public class JwtTokenProvider {
 
     public String generateToken(Authentication authentication) {
 
-        UserData userDetails = (UserData) authentication.getPrincipal();
+        User userDetails = (User) authentication.getPrincipal();
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
@@ -47,15 +48,11 @@ public class JwtTokenProvider {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
-        } catch (SignatureException ex) {
-            throw new TokenExpiredException("La firma de autenticación no es válida ¿Eres quien dices ser?");
-        } catch (MalformedJwtException ex) {
+        } catch (SignatureException | MalformedJwtException ex) {
             throw new TokenExpiredException("La firma de autenticación no es válida ¿Eres quien dices ser?");
         } catch (ExpiredJwtException ex) {
             throw new TokenExpiredException("Su session ha expirado");
-        } catch (UnsupportedJwtException ex) {
-            throw new TokenExpiredException("Sus credenciales no son válidas ¿Eres quien dices ser?");
-        } catch (IllegalArgumentException ex) {
+        } catch (UnsupportedJwtException | IllegalArgumentException ex) {
             throw new TokenExpiredException("Sus credenciales no son válidas ¿Eres quien dices ser?");
         }
     }

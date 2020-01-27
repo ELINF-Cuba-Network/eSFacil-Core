@@ -86,20 +86,4 @@ public class AuthApiController implements AuthApi {
         User result = userRepository.save(user);
         return responseHelper.ok(result);
     }
-
-    @Override
-    public ResponseEntity<?> userStatus(@RequestBody UserStatusRequest statusRequest) {
-        // Get user id from token
-        UUID userId = tokenProvider.getUserIdFromJWT(statusRequest.getToken());
-
-        Optional<User> user = userRepository.findById(userId);
-        if ( !user.isPresent() ) throw new ResourceNotFoundException("Su usuario no existe");
-
-        //Build response ( erase the password )
-        UserStatusResponse response = UserStatusResponse.create(user.get());
-
-        System.out.println("User for auth: \n" + user.get());
-        // in the way ....
-        return responseHelper.ok(response);
-    }
 }

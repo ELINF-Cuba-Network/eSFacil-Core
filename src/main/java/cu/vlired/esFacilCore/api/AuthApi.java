@@ -27,7 +27,4 @@ public interface AuthApi {
             @ApiParam(value = "User data", required = true) @Valid @RequestBody User user
     );
 
-    @RequestMapping(value = "/status", method = RequestMethod.POST)
-    ResponseEntity<?> userStatus(@RequestBody UserStatusRequest statusRequest);
-
 }
