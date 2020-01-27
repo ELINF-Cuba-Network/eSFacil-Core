@@ -27,6 +27,7 @@ public class User extends BaseEntity implements UserDetails {
     private String username;
 
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @Column(name = "firstname")
@@ -41,37 +42,41 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "active")
     private boolean active;
 
+    private boolean accountNonExpired;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
     public User() {
+        accountNonExpired = true;
+        accountNonLocked = true;
+        credentialsNonExpired = true;
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override
-    @JsonIgnore
     public boolean isAccountNonExpired() {
-        return false;
+        return accountNonExpired;
     }
 
     @Override
-    @JsonIgnore
     public boolean isAccountNonLocked() {
-        return false;
+        return accountNonLocked;
     }
 
     @Override
-    @JsonIgnore
     public boolean isCredentialsNonExpired() {
-        return false;
+        return credentialsNonExpired;
     }
 
     @Override
-    @JsonIgnore
     public boolean isEnabled() {
         return isActive();
     }

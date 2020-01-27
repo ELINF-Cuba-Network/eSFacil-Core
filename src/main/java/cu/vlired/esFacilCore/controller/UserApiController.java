@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cu.vlired.esFacilCore.controller;
 
 import java.util.*;
@@ -86,7 +81,7 @@ public class UserApiController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<?> deleteUser(@PathVariable long id) {
+    public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
         System.out.println("Deleting user "+id);
 
         Optional<User> user = userRepository.findById(id);
@@ -113,7 +108,6 @@ public class UserApiController implements UserApi {
         // only can update mail, area y cargo.., and password upside
         if ( !currentUser.getAuthorities().contains( new SimpleGrantedAuthority("ROLE_ADMIN")) ){
             user.setEmail(user.getEmail());
-         
         }
 
         userRepository.save(user);
@@ -122,7 +116,7 @@ public class UserApiController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<?> getUserById(@PathVariable long id) {
+    public ResponseEntity<?> getUserById(@PathVariable UUID id) {
 
         System.out.println("Getting user " + id);
 
@@ -182,6 +176,11 @@ public class UserApiController implements UserApi {
         resp.put("misPeticiones", randomGenerator.nextInt(100));
 
         return responseHelper.ok(resp);
+    }
+
+    @Override
+    public ResponseEntity<?> userStatus(@CurrentUser User currentUser) {
+        return responseHelper.ok(currentUser);
     }
 
 }

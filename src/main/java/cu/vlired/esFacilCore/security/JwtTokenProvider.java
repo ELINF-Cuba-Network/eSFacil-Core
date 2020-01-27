@@ -46,8 +46,8 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String authToken) {
         try {
-            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
-            return !claimsJws.getBody().getExpiration().before(new Date());
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            return true;
         } catch (SignatureException | MalformedJwtException ex) {
             throw new TokenExpiredException("La firma de autenticación no es válida ¿Eres quien dices ser?");
         } catch (ExpiredJwtException ex) {

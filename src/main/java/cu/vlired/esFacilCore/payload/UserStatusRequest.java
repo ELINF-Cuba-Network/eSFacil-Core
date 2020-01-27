@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Setter @Getter @ToString
+@Getter @Setter @ToString
 public class UserStatusRequest {
     private String token;
 }
