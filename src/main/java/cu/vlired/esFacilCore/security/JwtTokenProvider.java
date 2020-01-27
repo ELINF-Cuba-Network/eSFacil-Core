@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cu.vlired.esFacilCore.security;
 
 import cu.vlired.esFacilCore.exception.TokenExpiredException;
@@ -12,15 +7,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-
-/**
- *
- * @author luizo
- */
+import java.util.UUID;
 
 @Component
 public class JwtTokenProvider {
-    
+
     @Value("${app.jwtSecret}")
     private String jwtSecret;
 
@@ -43,13 +34,13 @@ public class JwtTokenProvider {
             .compact();
     }
 
-    public Long getUserIdFromJWT(String token) {
+    public UUID getUserIdFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
 
-        return Long.parseLong(claims.getSubject());
+        return UUID.fromString(claims.getSubject());
     }
 
     public boolean validateToken(String authToken) {

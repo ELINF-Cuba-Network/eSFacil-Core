@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Setter @Getter
 public class UserData implements UserDetails {
@@ -48,9 +49,8 @@ public class UserData implements UserDetails {
     }
 
      static UserData create(User user) {
-        List<GrantedAuthority> authorities = new LinkedList<>();
-       
-        authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
+        List<GrantedAuthority> authorities =
+                user.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
          
         return new UserData(
             user.getId(),

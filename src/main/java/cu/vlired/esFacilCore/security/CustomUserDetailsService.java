@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cu.vlired.esFacilCore.security;
 
 import cu.vlired.esFacilCore.model.User;
@@ -14,12 +9,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.UUID;
 
-
-/**
- *
- * @author luizo
- */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -28,12 +19,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional
-    public UserData loadUserByUsername(String usernameOrEmail)
+    public UserData loadUserByUsername(String email)
             throws UsernameNotFoundException {
-        // Let people login with either username or email
-        User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException("No existe el usuario : " + usernameOrEmail)
+                        new UsernameNotFoundException("No existe el usuario : " + email)
                 );
 
         return UserData.create(user);
@@ -41,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     // This method is used by JWTAuthenticationFilter
     @Transactional
-    public UserDetails loadUserById(Long id) {
+    public UserDetails loadUserById(UUID id) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new UsernameNotFoundException("No existe el usuario con id : " + id)
         );

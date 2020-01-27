@@ -1,53 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package cu.vlired.esFacilCore.api;
-
-import cu.vlired.esFacilCore.components.PaginationHelper;
-import cu.vlired.esFacilCore.components.ResponsesHelper;
-import cu.vlired.esFacilCore.exception.ResourceAlreadyTakenException;
-import cu.vlired.esFacilCore.exception.ResourceNotFoundException;
-import cu.vlired.esFacilCore.model.PagedData;
-import cu.vlired.esFacilCore.model.User;
-import cu.vlired.esFacilCore.payload.UserExistRequest;
-import cu.vlired.esFacilCore.payload.SignInRequest;
-import cu.vlired.esFacilCore.payload.UserStatusRequest;
-import cu.vlired.esFacilCore.payload.UserStatusResponse;
-import cu.vlired.esFacilCore.repository.UserRepository;
+package cu.vlired.esFacilCore.controller;
 
 import java.util.*;
 
-import cu.vlired.esFacilCore.security.CurrentUser;
-import cu.vlired.esFacilCore.security.JwtTokenProvider;
-import cu.vlired.esFacilCore.security.UserData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-/**
- *
- * @author luizo
- */
+import cu.vlired.esFacilCore.api.*;
+import cu.vlired.esFacilCore.components.*;
+import cu.vlired.esFacilCore.exception.*;
+import cu.vlired.esFacilCore.model.*;
+import cu.vlired.esFacilCore.payload.*;
+import cu.vlired.esFacilCore.repository.*;
+import cu.vlired.esFacilCore.security.*;
+
 @RestController
-public class UserApiController implements UserApi{
+public class UserApiController implements UserApi {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
-    
     @Autowired
     UserRepository userRepository;
     
@@ -59,9 +32,6 @@ public class UserApiController implements UserApi{
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    JwtTokenProvider tokenProvider;
 
     @Autowired
     Random  randomGenerator;
@@ -111,57 +81,6 @@ public class UserApiController implements UserApi{
     }
 
     @Override
-    public ResponseEntity<?> signIn(@RequestBody SignInRequest data) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        data.getUsername(),
-                        data.getPassword()
-                )
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.generateToken(authentication);
-        Map<String, String> respose = new HashMap<>();
-        respose.put("token", jwt);
-        return responseHelper.ok(respose);
-    }
-
-    @Override
-    public ResponseEntity<?> signUp(@RequestBody User user) {
-        System.out.println(user);
-        // Verify if user exist
-        boolean userPresent = userRepository.findByUsername(user.getUsername()).isPresent();
-        if ( userPresent ) throw new ResourceAlreadyTakenException("El usuario ya esta tomado");
-
-        // Verify if email exist
-        boolean emailPresent = userRepository.findByEmail(user.getEmail()).isPresent();
-        if ( emailPresent ) throw new ResourceAlreadyTakenException("El correo ya esta tomado");
-
-        // Creating user's account
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User result = userRepository.save(user);
-        System.out.println(result);
-
-        return responseHelper.ok(result);
-    }
-
-    @Override
-    public ResponseEntity<?> userStatus(@RequestBody UserStatusRequest statusRequest) {
-        // Get user id from token
-        Long userId = tokenProvider.getUserIdFromJWT(statusRequest.getToken());
-
-        Optional<User> user = userRepository.findById(userId);
-        if ( !user.isPresent() ) throw new ResourceNotFoundException("Su usuario no existe");
-
-        //Build response ( erase the password )
-        UserStatusResponse response = UserStatusResponse.create(user.get());
-
-        System.out.println("User for auth: \n" + user.get());
-        // in the way ....
-        return responseHelper.ok(response);
-    }
-
-    @Override
     public ResponseEntity<?> deleteUser(@PathVariable long id) {
         System.out.println("Deleting user "+id);
 
@@ -189,7 +108,6 @@ public class UserApiController implements UserApi{
         // only can update mail, area y cargo.., and password upside
         if ( !currentUser.getAuthorities().contains( new SimpleGrantedAuthority("ROLE_ADMIN")) ){
             user.setEmail(user.getEmail());
-         
         }
 
         userRepository.save(user);
@@ -258,7 +176,6 @@ public class UserApiController implements UserApi{
         resp.put("misPeticiones", randomGenerator.nextInt(100));
 
         return responseHelper.ok(resp);
-
     }
 
 }
