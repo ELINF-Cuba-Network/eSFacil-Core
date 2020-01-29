@@ -2,7 +2,8 @@ package cu.vlired.esFacilCore.controller;
 
 import cu.vlired.esFacilCore.constants.Roles;
 import cu.vlired.esFacilCore.payload.auth.LoginResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,20 +25,39 @@ import cu.vlired.esFacilCore.security.*;
 @RestController
 public class AuthApiController implements AuthApi {
 
-    @Autowired
+    final
     AuthenticationManager authenticationManager;
 
-    @Autowired
+    final
     JwtTokenProvider tokenProvider;
 
-    @Autowired
+    final
     UserRepository userRepository;
 
-    @Autowired
+    final
     ResponsesHelper responseHelper;
 
-    @Autowired
+    final
     PasswordEncoder passwordEncoder;
+
+    final
+    MessageSource messageSource;
+
+    public AuthApiController(
+            AuthenticationManager authenticationManager,
+            JwtTokenProvider tokenProvider,
+            UserRepository userRepository,
+            ResponsesHelper responseHelper,
+            PasswordEncoder passwordEncoder,
+            MessageSource messageSource
+    ) {
+        this.authenticationManager = authenticationManager;
+        this.tokenProvider = tokenProvider;
+        this.userRepository = userRepository;
+        this.responseHelper = responseHelper;
+        this.passwordEncoder = passwordEncoder;
+        this.messageSource = messageSource;
+    }
 
     @Override
     public ResponseEntity<?> signIn(@RequestBody SignInRequest data) {
@@ -60,12 +80,13 @@ public class AuthApiController implements AuthApi {
     @Override
     public ResponseEntity<?> signUp(@RequestBody User user) {
 
+        System.out.println(user);
         boolean userPresent = userRepository
                 .findByUsername(user.getUsername())
                 .isPresent();
 
         if ( userPresent ) {
-            throw new ResourceAlreadyTakenException("El usuario ya esta tomado");
+            throw new ResourceAlreadyTakenException(messageSource.getMessage("app.auth.username.already.taken", null, LocaleContextHolder.getLocale()));
         }
 
         boolean emailPresent = userRepository
@@ -73,7 +94,7 @@ public class AuthApiController implements AuthApi {
                 .isPresent();
 
         if ( emailPresent ) {
-            throw new ResourceAlreadyTakenException("El correo ya esta tomado");
+            throw new ResourceAlreadyTakenException(messageSource.getMessage("app.auth.email.already.taken", null, LocaleContextHolder.getLocale()));
         }
 
         user.setPassword(
@@ -81,7 +102,7 @@ public class AuthApiController implements AuthApi {
         );
 
         // Users by default are ROLE_SUBMITTER
-        user.setRoles(Arrays.asList(Roles.ROLE_SUBMITTER));
+        user.setRoles(Collections.singletonList(Roles.ROLE_SUBMITTER));
 
         User result = userRepository.save(user);
         return responseHelper.ok(result);

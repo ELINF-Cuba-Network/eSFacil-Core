@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cu.vlired.esFacilCore.components;
 
 import cu.vlired.esFacilCore.model.Page;
@@ -16,10 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- *
- * @author luizo
- */
 @Component
 public class PaginationHelper {
 
@@ -29,8 +20,8 @@ public class PaginationHelper {
      * @param params
      * @return
      */
-    public Pageable buildPageableByParams( Map<String, String> params ){
-        // Params keys
+    public Pageable buildPageableByParams(Map<String, String> params ){
+
         // {size, pageNumber, dir, prop, search}
         int pageNumber  = Integer.parseInt(params.get("pageNumber"));
         int size        = Integer.parseInt(params.get("size"));
@@ -38,15 +29,17 @@ public class PaginationHelper {
         String prop     = params.get("prop");
 
         // Build pageable
-        Sort sort = new Sort(
-                dir.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC,
-                prop
-        );
+        Sort sort = Sort.by(prop);
+        if (dir.equals("asc")) {
+            sort.ascending();
+        } else {
+            sort.descending();
+        }
 
         return  PageRequest.of(pageNumber, size, sort);
     }
 
-    public <T> PagedData<T> buildResponseByParams( Map<String, String> params, long count, List<T> filterData){
+    public <T> PagedData<T> buildResponseByParams(Map<String, String> params, long count, List<T> filterData){
         // Build Respose for FrontEnd
         Page page = new Page();
 
