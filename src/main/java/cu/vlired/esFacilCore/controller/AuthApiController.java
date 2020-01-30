@@ -41,7 +41,7 @@ public class AuthApiController implements AuthApi {
     PasswordEncoder passwordEncoder;
 
     final
-    MessageSource messageSource;
+    I18n i18n;
 
     public AuthApiController(
             AuthenticationManager authenticationManager,
@@ -49,14 +49,13 @@ public class AuthApiController implements AuthApi {
             UserRepository userRepository,
             ResponsesHelper responseHelper,
             PasswordEncoder passwordEncoder,
-            MessageSource messageSource
-    ) {
+            I18n i18n) {
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
         this.userRepository = userRepository;
         this.responseHelper = responseHelper;
         this.passwordEncoder = passwordEncoder;
-        this.messageSource = messageSource;
+        this.i18n = i18n;
     }
 
     @Override
@@ -86,7 +85,7 @@ public class AuthApiController implements AuthApi {
                 .isPresent();
 
         if ( userPresent ) {
-            throw new ResourceAlreadyTakenException(messageSource.getMessage("app.auth.username.already.taken", null, LocaleContextHolder.getLocale()));
+            throw new ResourceAlreadyTakenException(i18n.t("app.auth.username.already.taken"));
         }
 
         boolean emailPresent = userRepository
@@ -94,7 +93,7 @@ public class AuthApiController implements AuthApi {
                 .isPresent();
 
         if ( emailPresent ) {
-            throw new ResourceAlreadyTakenException(messageSource.getMessage("app.auth.email.already.taken", null, LocaleContextHolder.getLocale()));
+            throw new ResourceAlreadyTakenException(i18n.t("app.auth.email.already.taken"));
         }
 
         user.setPassword(

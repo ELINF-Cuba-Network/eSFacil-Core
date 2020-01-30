@@ -1,18 +1,16 @@
 package cu.vlired.esFacilCore.security;
 
+import cu.vlired.esFacilCore.components.I18n;
 import cu.vlired.esFacilCore.exception.TokenExpiredException;
 import cu.vlired.esFacilCore.model.User;
 import io.jsonwebtoken.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import java.util.Date;
-import java.util.Locale;
 import java.util.UUID;
 
 @Component
@@ -24,11 +22,10 @@ public class JwtTokenProvider {
     @Value("${app.jwtExpirationInMs}")
     private int jwtExpirationInMs;
 
-    final
-    MessageSource messageSource;
+    final I18n i18n;
 
-    public JwtTokenProvider(MessageSource messageSource) {
-        this.messageSource = messageSource;
+    public JwtTokenProvider(MessageSource messageSource, I18n i18n) {
+        this.i18n = i18n;
     }
 
     public String generateToken(Authentication authentication) {
@@ -61,11 +58,11 @@ public class JwtTokenProvider {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return !claimsJws.getBody().getExpiration().before(new Date());
         } catch (SignatureException | MalformedJwtException ex) {
-            throw new TokenExpiredException(messageSource.getMessage("app.security.the.authentication.signature.is.not.valid.are.you.who.you.say.you.are", null, LocaleContextHolder.getLocale()));
+            throw new TokenExpiredException(i18n.t("app.security.the.authentication.signature.is.not.valid.are.you.who.you.say.you.are"));
         } catch (ExpiredJwtException ex) {
-            throw new TokenExpiredException(messageSource.getMessage("app.security.your.session.has.expired", null, LocaleContextHolder.getLocale()));
+            throw new TokenExpiredException(i18n.t("app.security.your.session.has.expired"));
         } catch (UnsupportedJwtException | IllegalArgumentException ex) {
-            throw new TokenExpiredException(messageSource.getMessage("app.security.your.credentials.are.not.valid.are.you.who.you.say.you.are", null, LocaleContextHolder.getLocale()));
+            throw new TokenExpiredException(i18n.t("app.security.your.credentials.are.not.valid.are.you.who.you.say.you.are"));
         }
     }
 }
