@@ -21,7 +21,7 @@ import org.hibernate.annotations.TypeDef;
 public class Document extends BaseEntity {
 
     @Id
-    @Column(name = "document_id")
+    @Column(name = "id")
     private UUID id = UUID.randomUUID();
 
     @Type(type = "jsonb")
