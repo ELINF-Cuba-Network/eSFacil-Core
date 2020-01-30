@@ -41,8 +41,13 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "active")
     private boolean active;
 
+    @Transient
     private boolean accountNonExpired;
+
+    @Transient
     private boolean accountNonLocked;
+
+    @Transient
     private boolean credentialsNonExpired;
 
     @ElementCollection(fetch = FetchType.EAGER)

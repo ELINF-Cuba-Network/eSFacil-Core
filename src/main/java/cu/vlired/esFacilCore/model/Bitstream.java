@@ -14,17 +14,17 @@ import java.util.UUID;
 public class Bitstream  extends BaseEntity {
 
     @Id
-    @Column(name = "bitstream_id")
+    @Column(name = "id")
     private UUID id = UUID.randomUUID();
 
-    @Column(name = "bitstream_name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "bitstream_extension")
+    @Column(name = "extension")
     private String extension;
    
     @JsonIgnore
-    @Column(name = "bitstream_code")
+    @Column(name = "code")
     private String code;
 
     @ManyToOne(fetch = FetchType.LAZY)
