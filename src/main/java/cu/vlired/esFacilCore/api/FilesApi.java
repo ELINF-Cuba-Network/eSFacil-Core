@@ -1,8 +1,3 @@
-/*
- * @copyleft VLIRED
- * @author jose
- * 10/13/19
- */
 package cu.vlired.esFacilCore.api;
 
 import cu.vlired.esFacilCore.model.Document;
@@ -18,11 +13,6 @@ import java.io.IOException;
 @Api(value = "Files", tags = "File")
 @RequestMapping("/file")
 public interface FilesApi {
-
-    @RequestMapping(value = "/create-doc-from-file", headers = ("content-type=multipart/*"), method = RequestMethod.POST)
-    ResponseEntity<Document> CreateDocFromFile(
-            @ApiParam(value = "file", required = true) MultipartFile file
-    ) throws IOException;
 
     @RequestMapping(value = "/create-document-from-file", headers = ("content-type=multipart/*"), method = RequestMethod.POST)
     ResponseEntity<Document> CreateDocumentFromFile(

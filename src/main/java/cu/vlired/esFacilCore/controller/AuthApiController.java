@@ -2,8 +2,7 @@ package cu.vlired.esFacilCore.controller;
 
 import cu.vlired.esFacilCore.constants.Roles;
 import cu.vlired.esFacilCore.payload.auth.LoginResponse;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +21,7 @@ import cu.vlired.esFacilCore.payload.*;
 import cu.vlired.esFacilCore.repository.*;
 import cu.vlired.esFacilCore.security.*;
 
+@Log4j2
 @RestController
 public class AuthApiController implements AuthApi {
 
@@ -60,12 +60,15 @@ public class AuthApiController implements AuthApi {
 
     @Override
     public ResponseEntity<?> signIn(@RequestBody SignInRequest data) {
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         data.getUsername(),
                         data.getPassword()
                 )
         );
+
+        log.debug(String.format("Sign in data %s", data));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken(authentication);
@@ -77,12 +80,15 @@ public class AuthApiController implements AuthApi {
     }
 
     @Override
-    public ResponseEntity<?> signUp(@RequestBody User user) {
+    public ResponseEntity<?> signUp(@RequestBody User user) throws Exception {
 
-        System.out.println(user);
+        log.debug(String.format("Sign up user data %s", user));
+
         boolean userPresent = userRepository
                 .findByUsername(user.getUsername())
                 .isPresent();
+
+        log.debug(String.format("username is present? %b", userPresent));
 
         if ( userPresent ) {
             throw new ResourceAlreadyTakenException(i18n.t("app.auth.username.already.taken"));
@@ -91,6 +97,8 @@ public class AuthApiController implements AuthApi {
         boolean emailPresent = userRepository
                 .findByEmail(user.getEmail())
                 .isPresent();
+
+        log.debug(String.format("email is present? %b", emailPresent));
 
         if ( emailPresent ) {
             throw new ResourceAlreadyTakenException(i18n.t("app.auth.email.already.taken"));

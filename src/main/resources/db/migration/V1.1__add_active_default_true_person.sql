@@ -1,0 +1,2 @@
+ALTER TABLE person
+    ALTER COLUMN active SET DEFAULT TRUE;

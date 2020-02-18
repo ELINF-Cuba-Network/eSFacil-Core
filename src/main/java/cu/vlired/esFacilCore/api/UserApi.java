@@ -1,6 +1,5 @@
 package cu.vlired.esFacilCore.api;
 
-import cu.vlired.esFacilCore.payload.auth.LoginResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -21,7 +20,7 @@ import cu.vlired.esFacilCore.security.*;
 public interface UserApi {
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    ResponseEntity<User> createUser(@ApiParam(value = "", required = true) @RequestBody User user);
+    ResponseEntity<User> createUser(@ApiParam(required = true) @RequestBody User user);
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     ResponseEntity<List<User>> getAllUser();

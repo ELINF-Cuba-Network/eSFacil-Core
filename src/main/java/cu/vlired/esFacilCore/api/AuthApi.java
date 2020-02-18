@@ -25,6 +25,6 @@ public interface AuthApi {
     @RequestMapping(value = "/sign-up", method = RequestMethod.POST)
     ResponseEntity<?> signUp(
             @ApiParam(value = "User data", required = true) @Valid @RequestBody User user
-    );
+    ) throws Exception;
 
 }

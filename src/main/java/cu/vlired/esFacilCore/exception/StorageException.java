@@ -1,14 +1,11 @@
-/*
- * @copyleft VLIRED
- * @author jose
- * 10/13/19
- */
 package cu.vlired.esFacilCore.exception;
 
-public class StorageException extends RuntimeException {
+import cu.vlired.esFacilCore.constants.Codes;
+
+public class StorageException extends BaseException {
 
     public StorageException(String message) {
-        super(message);
+        super(message, Codes.STORAGE_ERROR);
     }
 
 }

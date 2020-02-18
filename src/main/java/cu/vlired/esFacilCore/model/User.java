@@ -54,6 +54,7 @@ public class User extends BaseEntity implements UserDetails {
     private List<String> roles = new ArrayList<>();
 
     public User() {
+        active = true;
         accountNonExpired = true;
         accountNonLocked = true;
         credentialsNonExpired = true;

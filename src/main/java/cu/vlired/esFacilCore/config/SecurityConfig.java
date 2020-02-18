@@ -84,6 +84,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/auth/**")
                 .permitAll()
+                // FIXME: Remove this
+                .antMatchers("/**")
+                .permitAll()
                 .antMatchers("/v2/api-docs", "/configuration/**", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/api-docs/**", "/document/**", "/documents", "/jsonbydoi", "/files-api-controller/**", "/createdocumentfromfile")
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/console/**")

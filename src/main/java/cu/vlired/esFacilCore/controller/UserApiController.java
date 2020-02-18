@@ -2,6 +2,7 @@ package cu.vlired.esFacilCore.controller;
 
 import java.util.*;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
@@ -18,29 +19,46 @@ import cu.vlired.esFacilCore.payload.*;
 import cu.vlired.esFacilCore.repository.*;
 import cu.vlired.esFacilCore.security.*;
 
+@Log4j2
 @RestController
 public class UserApiController implements UserApi {
 
-    @Autowired
+    final
     UserRepository userRepository;
     
-    @Autowired
+    final
     ResponsesHelper responseHelper;
 
-    @Autowired
+    final
     PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
+    final
     Random  randomGenerator;
 
-    @Autowired
+    final
     PaginationHelper paginationHelper;
+
+    public UserApiController(
+            UserRepository userRepository,
+            ResponsesHelper responseHelper,
+            PasswordEncoder passwordEncoder,
+            BCryptPasswordEncoder bCryptPasswordEncoder,
+            Random randomGenerator,
+            PaginationHelper paginationHelper
+    ) {
+        this.userRepository = userRepository;
+        this.responseHelper = responseHelper;
+        this.passwordEncoder = passwordEncoder;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.randomGenerator = randomGenerator;
+        this.paginationHelper = paginationHelper;
+    }
 
     @Override
     public ResponseEntity<User> createUser(@RequestBody User user) {
+        log.info("<<<<-------");
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         User saveUser = userRepository.save(user);
         return responseHelper.buildResponse(saveUser, HttpStatus.OK);

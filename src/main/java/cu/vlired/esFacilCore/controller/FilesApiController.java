@@ -1,6 +1,8 @@
-package cu.vlired.esFacilCore.api;
+package cu.vlired.esFacilCore.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cu.vlired.esFacilCore.api.FilesApi;
 import cu.vlired.esFacilCore.components.ResponsesHelper;
 import cu.vlired.esFacilCore.constants.Condition;
 import cu.vlired.esFacilCore.model.Bitstream;
@@ -62,22 +64,8 @@ public class FilesApiController implements FilesApi {
      * @return - The created document
      * @throws IOException - On IO Error
      */
-    public ResponseEntity<Document> CreateDocFromFile(
-        @RequestParam(value = "file") MultipartFile file
-    ) throws IOException {
-
-        // TODO. Handle this
-        return responseHelper.ok(new Document());
-    }
-
-    /**
-     * 
-     * @param file
-     * @return
-     * @throws IOException
-     */
     public ResponseEntity<Document> CreateDocumentFromFile(
-            @RequestParam(value = "file") MultipartFile file
+        @RequestParam(value = "file") MultipartFile file
     ) throws IOException {
 
         // Create a bitstream using the file
@@ -85,6 +73,12 @@ public class FilesApiController implements FilesApi {
 
         // Getting the bitstream metadata from Darkaiv
         Map<String, List<String>> jsonDarkaiv = metadataResolver.getMetadataFromFile(file);
+
+        // I need to Map the Darkaiv response to a CSL format
+        // mapData has the darkaiv key to => CSL key
+        byte[] mapData = Files.readAllBytes(
+                Paths.get(dir_config, "DarkaivApiToCSLMap.json")
+        );
 
         // Create the document
         Document doc = new Document();
