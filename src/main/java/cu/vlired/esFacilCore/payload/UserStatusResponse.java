@@ -14,8 +14,8 @@ public class UserStatusResponse {
 
     private UUID id;
     private String username;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
     private String email;
     private boolean isActive;
     private List<String> roles;
@@ -25,8 +25,8 @@ public class UserStatusResponse {
         UserStatusResponse usr = new UserStatusResponse();
         usr.setId( user.getId() );
         usr.setUsername( user.getUsername() );
-        usr.setFirstName( user.getFirstName() );
-        usr.setLastName( user.getLastName() );
+        usr.setFirstname( user.getFirstname() );
+        usr.setLastname( user.getLastname() );
         usr.setEmail( user.getEmail() );
         usr.setActive( user.isActive() );
         usr.setRoles( user.getRoles() );

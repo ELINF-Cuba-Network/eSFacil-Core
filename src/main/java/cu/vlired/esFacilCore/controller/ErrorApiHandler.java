@@ -13,12 +13,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
 import java.util.Date;
 
 @Log4j2
@@ -42,11 +43,11 @@ public class ErrorApiHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.error(ExceptionUtils.getStackTrace(ex));
 
         var error = buildError(ex.getMessage());
-        return rh.buildResponse(error, HttpStatus.NOT_FOUND);
+        return rh.buildResponse(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AuthenticationServiceException.class)
@@ -55,6 +56,14 @@ public class ErrorApiHandler extends ResponseEntityExceptionHandler {
 
         var error = buildError(ex);
         return rh.buildResponse(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
+        log.error(ExceptionUtils.getStackTrace(ex));
+
+        var error = buildError(ex.getMessage());
+        return rh.buildResponse(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ResourceAlreadyTakenException.class)

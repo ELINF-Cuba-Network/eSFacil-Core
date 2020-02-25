@@ -13,10 +13,6 @@ import java.util.UUID;
 @Getter @Setter
 public class Bitstream  extends BaseEntity {
 
-    @Id
-    @Column(name = "id")
-    private UUID id = UUID.randomUUID();
-
     @Column(name = "name")
     private String name;
 

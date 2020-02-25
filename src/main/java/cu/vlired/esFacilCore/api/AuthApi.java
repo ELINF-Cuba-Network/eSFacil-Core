@@ -1,8 +1,9 @@
 package cu.vlired.esFacilCore.api;
 
 import cu.vlired.esFacilCore.model.*;
-import cu.vlired.esFacilCore.payload.*;
+import cu.vlired.esFacilCore.model.dto.SignUpDTO;
 import cu.vlired.esFacilCore.payload.auth.LoginResponse;
+import cu.vlired.esFacilCore.payload.auth.SignInRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -24,7 +25,7 @@ public interface AuthApi {
     @ApiOperation(value = "Sign up user", response = LoginResponse.class)
     @RequestMapping(value = "/sign-up", method = RequestMethod.POST)
     ResponseEntity<?> signUp(
-            @ApiParam(value = "User data", required = true) @Valid @RequestBody User user
+            @ApiParam(value = "User data", required = true) @Valid @RequestBody SignUpDTO user
     ) throws Exception;
 
 }

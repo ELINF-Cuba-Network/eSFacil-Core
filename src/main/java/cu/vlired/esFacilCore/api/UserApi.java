@@ -1,5 +1,8 @@
 package cu.vlired.esFacilCore.api;
 
+import cu.vlired.esFacilCore.model.dto.PatchUserDTO;
+import cu.vlired.esFacilCore.model.dto.UserDTO;
+import cu.vlired.esFacilCore.util.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -15,27 +18,29 @@ import cu.vlired.esFacilCore.model.*;
 import cu.vlired.esFacilCore.payload.*;
 import cu.vlired.esFacilCore.security.*;
 
+import javax.validation.Valid;
+
 @Api(value = "Users", tags = {"User"})
 @RequestMapping("/users")
 public interface UserApi {
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    ResponseEntity<User> createUser(@ApiParam(required = true) @RequestBody User user);
+    @ApiOperation(value = "Create a new user", response = UserDTO.class)
+    @RequestMapping(method = RequestMethod.POST)
+    ResponseEntity<?> createUser(@Valid @RequestBody UserDTO user);
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    ResponseEntity<List<User>> getAllUser();
-
-    @RequestMapping(value = "/filter", method = RequestMethod.GET)
-    ResponseEntity<PagedData<User>> filterUsers(@ApiParam(value = "", required = true) @RequestParam Map<String, String> params);
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    ResponseEntity<?> deleteUser(@PathVariable UUID id);
-
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
-    ResponseEntity<?> updateUser(@RequestBody User user, @CurrentUser User currentUser);
-
+    @ApiOperation(value = "Get user by id", response = UserDTO.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     ResponseEntity<?> getUserById(@PathVariable UUID id);
+
+    @ApiOperation(value = "List users", response = List.class)
+    @RequestMapping(method = RequestMethod.GET)
+    ResponseEntity<?> listUsers(Page page);
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    ResponseEntity<?> updateUser(@PathVariable("id") UUID id, @Valid @RequestBody UserDTO user);
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
+    ResponseEntity<?> patchUser(@PathVariable("id") UUID id, @Valid @RequestBody PatchUserDTO user);
 
     @RequestMapping(value = "/exist-username", method = RequestMethod.POST)
     ResponseEntity<?> existUserByUsername(@RequestBody UserExistRequest request);
@@ -43,17 +48,8 @@ public interface UserApi {
     @RequestMapping(value = "/exist-email", method = RequestMethod.POST)
     ResponseEntity<?> existUserByEmail(@RequestBody UserExistRequest request);
 
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
-    ResponseEntity<?> search(@RequestParam(name = "pattern") String pattern);
-
-    @ApiOperation(value = "Get current user information", response = User.class)
+    @ApiOperation(value = "Get current user information", response = UserDTO.class)
     @RequestMapping(value = "/me", method = RequestMethod.GET)
     ResponseEntity<?> userStatus(@CurrentUser User currentUser);
-
-    /**
-     * Fake states response for app sidebar
-     */
-    @RequestMapping(value = "/user/states", method = RequestMethod.GET)
-    ResponseEntity<?> getStates();
 
 }

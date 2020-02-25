@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.persistence.*;
 
@@ -19,10 +18,6 @@ import javax.persistence.*;
 @Getter @Setter
 public class User extends BaseEntity implements UserDetails {
 
-    @Id
-    @Column(name = "id")
-    private UUID id = UUID.randomUUID();
-
     @Column(unique = true, name = "username")
     private String username;
 
@@ -30,10 +25,10 @@ public class User extends BaseEntity implements UserDetails {
     private String password;
 
     @Column(name = "firstname")
-    private String firstName;
+    private String firstname;
 
     @Column(name = "lastname")
-    private String lastName;
+    private String lastname;
 
     @Column(unique = true, name = "email")
     private String email;

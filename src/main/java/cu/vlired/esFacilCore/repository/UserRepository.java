@@ -11,25 +11,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface UserRepository extends JpaRepository<User, UUID>{
+public interface UserRepository
+        extends JpaRepository<User, UUID>, CustomUserRepository {
     
     List<User> findAll();
-    List<User> findByUsernameContainingIgnoreCaseOrFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase(
-            String username,
-            String firstName,
-            String lastName,
-            String email
-    );
 
-    // Same up but when JPQL
     @Query( "SELECT u   FROM User u " +
             "WHERE      LOWER(u.username)   LIKE LOWER(CONCAT('%', :pattern, '%'))" +
-            "OR         LOWER(u.firstName)  LIKE LOWER(CONCAT('%', :pattern, '%'))" +
-            "OR         LOWER(u.lastName)   LIKE LOWER(CONCAT('%', :pattern, '%'))" +
+            "OR         LOWER(u.firstname)  LIKE LOWER(CONCAT('%', :pattern, '%'))" +
+            "OR         LOWER(u.lastname)   LIKE LOWER(CONCAT('%', :pattern, '%'))" +
             "OR         LOWER(u.email)      LIKE LOWER(CONCAT('%', :pattern, '%'))"
     )
-            
-    List<User> paginateWithSearch(@Param("pattern") String pattern, Pageable pageable);
+    List<User> paginateAndSearch(@Param("pattern") String pattern, Pageable pageable);
      
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);

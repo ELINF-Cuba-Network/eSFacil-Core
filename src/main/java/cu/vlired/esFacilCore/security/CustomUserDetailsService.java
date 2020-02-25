@@ -5,13 +5,10 @@ import cu.vlired.esFacilCore.model.User;
 import cu.vlired.esFacilCore.repository.UserRepository;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.UUID;
 
 @Log4j2

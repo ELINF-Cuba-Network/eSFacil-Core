@@ -20,10 +20,6 @@ import org.hibernate.annotations.TypeDef;
 @Getter @Setter
 public class Document extends BaseEntity {
 
-    @Id
-    @Column(name = "id")
-    private UUID id = UUID.randomUUID();
-
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
     private Map<String, List<String>> data;

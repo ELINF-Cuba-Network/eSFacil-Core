@@ -1,7 +1,7 @@
 package cu.vlired.esFacilCore.components;
 
-import cu.vlired.esFacilCore.model.Page;
-import cu.vlired.esFacilCore.model.PagedData;
+import cu.vlired.esFacilCore.util.Page;
+import cu.vlired.esFacilCore.util.PagedData;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -43,7 +43,7 @@ public class PaginationHelper {
         // Build Respose for FrontEnd
         Page page = new Page();
 
-        // Params keys
+        /*// Params keys
         // {size, pageNumber, dir, prop, search}
         int pageNumber  = Integer.parseInt(params.get("pageNumber"));
         int size        = Integer.parseInt(params.get("size"));
@@ -64,9 +64,9 @@ public class PaginationHelper {
 
         PagedData<T> pagedData = new PagedData<>();
         pagedData.setData(filterData);
-        pagedData.setPage(page);
+        pagedData.setPage(page);*/
 
-        return pagedData;
+        return null;
     }
 
 }

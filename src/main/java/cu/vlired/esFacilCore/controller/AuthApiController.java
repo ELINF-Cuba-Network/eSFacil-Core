@@ -1,7 +1,11 @@
 package cu.vlired.esFacilCore.controller;
 
 import cu.vlired.esFacilCore.constants.Roles;
+import cu.vlired.esFacilCore.model.dto.SignUpDTO;
+import cu.vlired.esFacilCore.model.dto.UserDTO;
 import cu.vlired.esFacilCore.payload.auth.LoginResponse;
+import cu.vlired.esFacilCore.payload.auth.SignInRequest;
+import cu.vlired.esFacilCore.services.DTOUtilService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +21,6 @@ import cu.vlired.esFacilCore.api.*;
 import cu.vlired.esFacilCore.components.*;
 import cu.vlired.esFacilCore.exception.*;
 import cu.vlired.esFacilCore.model.*;
-import cu.vlired.esFacilCore.payload.*;
 import cu.vlired.esFacilCore.repository.*;
 import cu.vlired.esFacilCore.security.*;
 
@@ -39,6 +42,7 @@ public class AuthApiController implements AuthApi {
 
     final
     PasswordEncoder passwordEncoder;
+    private DTOUtilService dtoUtilService;
 
     final
     I18n i18n;
@@ -49,12 +53,14 @@ public class AuthApiController implements AuthApi {
             UserRepository userRepository,
             ResponsesHelper responseHelper,
             PasswordEncoder passwordEncoder,
+            DTOUtilService dtoUtilService,
             I18n i18n) {
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
         this.userRepository = userRepository;
         this.responseHelper = responseHelper;
         this.passwordEncoder = passwordEncoder;
+        this.dtoUtilService = dtoUtilService;
         this.i18n = i18n;
     }
 
@@ -80,8 +86,9 @@ public class AuthApiController implements AuthApi {
     }
 
     @Override
-    public ResponseEntity<?> signUp(@RequestBody User user) throws Exception {
+    public ResponseEntity<?> signUp(@RequestBody SignUpDTO userDTO) throws Exception {
 
+        User user = dtoUtilService.convertToEntity(userDTO, User.class);
         log.debug(String.format("Sign up user data %s", user));
 
         boolean userPresent = userRepository
@@ -112,6 +119,7 @@ public class AuthApiController implements AuthApi {
         user.setRoles(Collections.singletonList(Roles.ROLE_SUBMITTER));
 
         User result = userRepository.save(user);
-        return responseHelper.ok(result);
+        var res = dtoUtilService.convertToDTO(result, UserDTO.class);
+        return responseHelper.ok(res);
     }
 }

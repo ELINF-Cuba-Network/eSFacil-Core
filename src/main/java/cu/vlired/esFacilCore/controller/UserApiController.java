@@ -2,12 +2,14 @@ package cu.vlired.esFacilCore.controller;
 
 import java.util.*;
 
+import cu.vlired.esFacilCore.model.dto.PatchUserDTO;
+import cu.vlired.esFacilCore.model.dto.UserDTO;
+import cu.vlired.esFacilCore.services.UserService;
+import cu.vlired.esFacilCore.util.Page;
+import cu.vlired.esFacilCore.util.PagedData;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.http.*;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,122 +27,82 @@ public class UserApiController implements UserApi {
 
     final
     UserRepository userRepository;
-    
+
     final
     ResponsesHelper responseHelper;
 
     final
     PasswordEncoder passwordEncoder;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    final
-    Random  randomGenerator;
+    private UserService userService;
 
     final
     PaginationHelper paginationHelper;
+
+    final
+    I18n i18n;
 
     public UserApiController(
             UserRepository userRepository,
             ResponsesHelper responseHelper,
             PasswordEncoder passwordEncoder,
-            BCryptPasswordEncoder bCryptPasswordEncoder,
-            Random randomGenerator,
-            PaginationHelper paginationHelper
+            UserService userService,
+            PaginationHelper paginationHelper,
+            I18n i18n
     ) {
         this.userRepository = userRepository;
         this.responseHelper = responseHelper;
         this.passwordEncoder = passwordEncoder;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.randomGenerator = randomGenerator;
+        this.userService = userService;
         this.paginationHelper = paginationHelper;
+        this.i18n = i18n;
     }
 
     @Override
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        log.info("<<<<-------");
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        User saveUser = userRepository.save(user);
-        return responseHelper.buildResponse(saveUser, HttpStatus.OK);
+    public ResponseEntity<?> createUser(@RequestBody UserDTO user) {
+
+        UserDTO createdUser = userService.create(user);
+        return responseHelper.buildResponse(createdUser, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<User>> getAllUser() {
-        List<User> findAll = userRepository.findAll();
-        return responseHelper.buildResponse(findAll, HttpStatus.OK);
-    }
+    public ResponseEntity<?> updateUser(UUID id, @RequestBody UserDTO user) {
 
-    @Override
-    public ResponseEntity<PagedData<User>> filterUsers(@RequestParam Map<String, String> params) {
-
-        // Create pageable using params
-        Pageable pageable = paginationHelper.buildPageableByParams(params);
-
-        long count      = userRepository.count();
-        String search   = params.get("search");
-
-        // Ugly dynamic method
-        /** List<User> filterUsers = userRepository.findByUsernameContainingIgnoreCaseOrFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase(
-                search,
-                search,
-                search,
-                search,
-                pageable
-        ); **/
-
-        List<User> filterUsers = userRepository.paginateWithSearch(search, pageable);
-
-        PagedData<User> pagedData = paginationHelper.buildResponseByParams(params, count, filterUsers);
-
-        // Convert filtered users to UserPayload (Delete Password from response)
-        filterUsers.stream().map(user -> UserStatusResponse.create(user));
-        
-        return responseHelper.buildResponse(pagedData, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
-        System.out.println("Deleting user "+id);
-
-        Optional<User> user = userRepository.findById(id);
-        if ( !user.isPresent() ) throw new ResourceNotFoundException("El usuario no existe");
-
-        userRepository.deleteById(id);
-        return responseHelper.ok(user);
-    }
-
-    @Override
-    public ResponseEntity<?> updateUser(@RequestBody User user, @CurrentUser User currentUser) {
-        Optional<User> oldUser = userRepository.findById(user.getId());
-       
-        if ( !oldUser.isPresent() ) throw new ResourceNotFoundException("El usuario no existe");
-
-        // If given password NOT is null, the user want change it passwd
-        if (user.getPassword() != null ) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        } else {
-            user.setPassword(oldUser.get().getPassword());
+        if (!userRepository.existsById(id)) {
+            throw new ResourceNotFoundException(
+                    i18n.t("app.security.user.id.not.found", ArrayUtils.toArray(id))
+            );
         }
 
-        // If logged in user not has ROLE_ADMIN
-        // only can update mail, area y cargo.., and password upside
-        if ( !currentUser.getAuthorities().contains( new SimpleGrantedAuthority("ROLE_ADMIN")) ){
-            user.setEmail(user.getEmail());
-        }
+        var updatedUser = userService.update(id, user);
+        return responseHelper.ok(updatedUser);
+    }
 
-        userRepository.save(user);
+    @Override
+    public ResponseEntity<?> patchUser(UUID id, @RequestBody PatchUserDTO user) {
+        User old = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        i18n.t("app.security.user.id.not.found", ArrayUtils.toArray(id))
+                ));
 
-        return responseHelper.ok(user);
+        var updatedUser = userService.patch(old, user);
+        return responseHelper.ok(updatedUser);
     }
 
     @Override
     public ResponseEntity<?> getUserById(@PathVariable UUID id) {
+        log.info(String.format("Getting user with id %s", id));
 
-        System.out.println("Getting user " + id);
+        UserDTO userDTO = userService.getById(id);
+        return responseHelper.ok(userDTO);
+    }
 
-        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("El usuario no existe"));
-        return responseHelper.ok(UserStatusResponse.create(user));
+    @Override
+    public ResponseEntity<?> listUsers(Page page) {
+        log.debug(String.format("User request page %s", page));
+        List<UserDTO> userDTO = userService.list(page);
 
+        return responseHelper.ok(userDTO);
     }
 
     @Override
@@ -150,10 +112,9 @@ public class UserApiController implements UserApi {
         UUID id = request.getId();
         System.out.println(id);
 
-        System.out.println("Getting user with username "+username);
         Optional<User> user = userRepository.findByUsername(username);
 
-        if ( user.isPresent() && user.get().getId() != id ) return responseHelper.ok(true);
+        if (user.isPresent() && user.get().getId() != id) return responseHelper.ok(true);
         return responseHelper.ok(false);
     }
 
@@ -163,42 +124,16 @@ public class UserApiController implements UserApi {
         String email = request.getEmail();
         UUID id = request.getId();
 
-        System.out.println("Getting user with email "+email);
         Optional<User> user = userRepository.findByEmail(email);
 
-        if ( user.isPresent() && user.get().getId() != id ) return responseHelper.ok(true);
+        if (user.isPresent() && user.get().getId() != id) return responseHelper.ok(true);
         return responseHelper.ok(false);
     }
 
     @Override
-    public ResponseEntity<?> search(@RequestParam(name = "pattern") String pattern) {
-
-        System.out.println("Search term: "+pattern);
-        List<User> filteredUsers = userRepository.findByUsernameContainingIgnoreCaseOrFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase(
-                pattern,
-                pattern,
-                pattern,
-                pattern
-        );
-
-        return responseHelper.ok(filteredUsers);
-    }
-
-    @Override
-    public ResponseEntity<?> getStates() {
-
-        Map resp = new HashMap();
-        resp.put("pendientes", randomGenerator.nextInt(100));
-        resp.put("enEspera", randomGenerator.nextInt(100));
-        resp.put("terminadas", randomGenerator.nextInt(100));
-        resp.put("misPeticiones", randomGenerator.nextInt(100));
-
-        return responseHelper.ok(resp);
-    }
-
-    @Override
     public ResponseEntity<?> userStatus(@CurrentUser User currentUser) {
-        return responseHelper.ok(currentUser);
+        UserDTO userDTO = userService.status(currentUser);
+        return responseHelper.ok(userDTO);
     }
 
 }

@@ -54,7 +54,7 @@ public class Startup implements CommandLineRunner {
         if (admin.isEmpty()) {
             User u = new User();
             u.setUsername("admin");
-            u.setFirstName("Administrator");
+            u.setFirstname("Administrator");
             u.setRoles(Collections.singletonList(Roles.ROLE_ADMIN));
             u.setActive(true);
             u.setEmail("admin@vlired.cu");
