@@ -110,7 +110,6 @@ public class UserApiController implements UserApi {
 
         String username = request.getUsername();
         UUID id = request.getId();
-        System.out.println(id);
 
         Optional<User> user = userRepository.findByUsername(username);
 
