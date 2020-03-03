@@ -5,6 +5,7 @@
  */
 package cu.vlired.esFacilCore.services;
 
+import cu.vlired.esFacilCore.model.documentData.DocumentData;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface MetadataResolver {
      * @param file File to extract metadata
      * @return Map with Metadata => [...values]
      */
-    public Map<String, List<String>> getMetadataFromFile(MultipartFile file);
+    public DocumentData getMetadataFromFile(MultipartFile file);
 
     /**
      * Process a response for a external metadata extractor service

@@ -2,7 +2,7 @@ package cu.vlired.esFacilCore.services;
 
 import com.sun.istack.NotNull;
 import cu.vlired.esFacilCore.model.BaseEntity;
-import cu.vlired.esFacilCore.model.dto.BaseDTO;
+import cu.vlired.esFacilCore.dto.BaseDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 

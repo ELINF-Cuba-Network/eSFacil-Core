@@ -1,8 +1,8 @@
 package cu.vlired.esFacilCore.controller;
 
 import cu.vlired.esFacilCore.constants.Roles;
-import cu.vlired.esFacilCore.model.dto.SignUpDTO;
-import cu.vlired.esFacilCore.model.dto.UserDTO;
+import cu.vlired.esFacilCore.dto.SignUpDTO;
+import cu.vlired.esFacilCore.dto.UserDTO;
 import cu.vlired.esFacilCore.payload.auth.LoginResponse;
 import cu.vlired.esFacilCore.payload.auth.SignInRequest;
 import cu.vlired.esFacilCore.services.DTOUtilService;

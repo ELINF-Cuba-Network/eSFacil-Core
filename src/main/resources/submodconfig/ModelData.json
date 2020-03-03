@@ -56,9 +56,5 @@
   "DOI": "10.1164\/rccm.201704-0797oc",
   "page": "873-881",
   "volume": "196",
-  "container-title": ["American Journal of Respiratory and Critical Care Medicine"],
-  "bitstreams": [
-    {"id": 1, "name": "Modelo para valorar las (...) Capitulo 1.pdf"},
-    {"id": 2, "name": "Modelo para valorar las (...) Capitulo 2.pdf"}
-  ]
+  "container-title": ["American Journal of Respiratory and Critical Care Medicine"]
 }

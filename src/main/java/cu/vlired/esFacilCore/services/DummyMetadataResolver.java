@@ -1,48 +1,55 @@
-/*
- * @copyleft VLIRED
- * @author jose
- * 10/17/19
- */
 package cu.vlired.esFacilCore.services;
 
+import cu.vlired.esFacilCore.model.documentData.Author;
+import cu.vlired.esFacilCore.model.documentData.DocumentData;
+import cu.vlired.esFacilCore.model.documentData.Issn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Primary
 public class DummyMetadataResolver implements MetadataResolver {
 
     @Override
-    public Map<String, List<String>> getMetadataFromFile(MultipartFile file) {
+    public DocumentData getMetadataFromFile(MultipartFile file) {
 
-        Map<String, String> data = new HashMap<String, String>() {{
-            put("title", "Un Chino muy chino");
-            put("author", "de Tobias, El Bueno");
-            put("publisher", "Loulogio");
-            put("type", "Journal");
-            put("issued", "2001");
-        }};
-
-        return processResponse(data);
+        return DocumentData
+            .builder()
+            .author(
+                Collections.singletonList(
+                    Author
+                        .builder()
+                        .family("de Tobias")
+                        .given("El Bueno")
+                        .build()
+                )
+            )
+            .title(
+                Collections.singletonList("Un Chino muy chino")
+            )
+            .publisher(
+                Collections.singletonList("Loulogio")
+            )
+            .type(
+                Collections.singletonList("Journal")
+            )
+            .issnType(
+                Collections.singletonList(
+                    Issn
+                        .builder()
+                        .type("print")
+                        .value("1073-449X")
+                        .build()
+                )
+            )
+            .build();
     }
 
     @Override
     public Map<String, List<String>> processResponse(Object data) {
-
-        Map<String, String> given = (Map<String, String>) data;
-
-        Map<String, List<String>> resp = new HashMap<>();
-
-        for (String key: given.keySet()) {
-            resp.put(key, Arrays.asList(given.get(key)));
-        }
-
-        return resp;
+        return null;
     }
 }

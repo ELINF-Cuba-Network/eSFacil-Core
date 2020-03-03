@@ -1,4 +1,4 @@
-package cu.vlired.esFacilCore.model.dto;
+package cu.vlired.esFacilCore.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Setter @Getter @ToString
-public class PatchUserDTO {
+public class PatchUserDTO extends BaseDTO {
     @Size(
             message = "{app.validation.username.max.value}",
             max = 20

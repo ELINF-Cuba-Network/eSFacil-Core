@@ -1,4 +1,4 @@
-package cu.vlired.esFacilCore.model.dto;
+package cu.vlired.esFacilCore.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

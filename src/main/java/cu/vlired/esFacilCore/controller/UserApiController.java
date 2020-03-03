@@ -2,11 +2,10 @@ package cu.vlired.esFacilCore.controller;
 
 import java.util.*;
 
-import cu.vlired.esFacilCore.model.dto.PatchUserDTO;
-import cu.vlired.esFacilCore.model.dto.UserDTO;
+import cu.vlired.esFacilCore.dto.PatchUserDTO;
+import cu.vlired.esFacilCore.dto.UserDTO;
 import cu.vlired.esFacilCore.services.UserService;
 import cu.vlired.esFacilCore.util.Page;
-import cu.vlired.esFacilCore.util.PagedData;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.http.*;

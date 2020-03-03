@@ -1,14 +1,12 @@
 package cu.vlired.esFacilCore.api;
 
-import cu.vlired.esFacilCore.model.dto.PatchUserDTO;
-import cu.vlired.esFacilCore.model.dto.UserDTO;
+import cu.vlired.esFacilCore.dto.PatchUserDTO;
+import cu.vlired.esFacilCore.dto.UserDTO;
 import cu.vlired.esFacilCore.util.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;

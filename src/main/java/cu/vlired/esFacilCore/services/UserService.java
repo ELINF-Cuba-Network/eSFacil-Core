@@ -4,12 +4,11 @@ import cu.vlired.esFacilCore.components.I18n;
 import cu.vlired.esFacilCore.constants.Roles;
 import cu.vlired.esFacilCore.exception.ResourceNotFoundException;
 import cu.vlired.esFacilCore.model.User;
-import cu.vlired.esFacilCore.model.dto.PatchUserDTO;
-import cu.vlired.esFacilCore.model.dto.UserDTO;
+import cu.vlired.esFacilCore.dto.PatchUserDTO;
+import cu.vlired.esFacilCore.dto.UserDTO;
 import cu.vlired.esFacilCore.repository.UserRepository;
 import cu.vlired.esFacilCore.util.Page;
 import org.apache.commons.lang3.ArrayUtils;
-import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -111,12 +110,9 @@ public class UserService {
 
         List<User> list = userRepository.list(page);
 
-        List<UserDTO> users = list.stream()
+        return list.stream()
                 .map(user -> dtoUtilService.convertToDTO(user, UserDTO.class))
                 .collect(Collectors.toList());
-
-        System.out.println(users.size());
-        return users;
     }
 
     public UserDTO status(User user) {

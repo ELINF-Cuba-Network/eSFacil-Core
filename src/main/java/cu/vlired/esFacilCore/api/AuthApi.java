@@ -1,7 +1,6 @@
 package cu.vlired.esFacilCore.api;
 
-import cu.vlired.esFacilCore.model.*;
-import cu.vlired.esFacilCore.model.dto.SignUpDTO;
+import cu.vlired.esFacilCore.dto.SignUpDTO;
 import cu.vlired.esFacilCore.payload.auth.LoginResponse;
 import cu.vlired.esFacilCore.payload.auth.SignInRequest;
 import io.swagger.annotations.Api;

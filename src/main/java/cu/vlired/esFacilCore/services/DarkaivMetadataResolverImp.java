@@ -5,6 +5,7 @@
  */
 package cu.vlired.esFacilCore.services;
 
+import cu.vlired.esFacilCore.model.documentData.DocumentData;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -27,12 +28,12 @@ public class DarkaivMetadataResolverImp implements MetadataResolver {
     }
 
     @Override
-    public Map<String, List<String>> getMetadataFromFile(MultipartFile file) {
+    public DocumentData getMetadataFromFile(MultipartFile file) {
 
         // TODO: Change this when Darkaiv works
         // Map resp = restTemplate.getForObject(dir_darkaiv + PATH, HashMap.class);
 
-        return new HashMap<>();
+        return DocumentData.builder().build();
     }
 
     @Override

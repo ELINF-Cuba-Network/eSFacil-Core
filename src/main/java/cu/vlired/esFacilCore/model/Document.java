@@ -5,10 +5,9 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import javax.persistence.*;
 
+import cu.vlired.esFacilCore.model.documentData.DocumentData;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
@@ -22,7 +21,7 @@ public class Document extends BaseEntity {
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
-    private Map<String, List<String>> data;
+    private DocumentData data;
 
     @OneToMany(
         mappedBy = "document",

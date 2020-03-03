@@ -1,15 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cu.vlired.esFacilCore.api;
 
-import cu.vlired.esFacilCore.model.Bitstream;
+import cu.vlired.esFacilCore.dto.DocumentDTO;
 import cu.vlired.esFacilCore.model.Document;
+import cu.vlired.esFacilCore.model.User;
+import cu.vlired.esFacilCore.dto.UserDTO;
+import cu.vlired.esFacilCore.security.CurrentUser;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Api(value = "Documents", tags = {"Document"})
 @RequestMapping("/document")
@@ -35,7 +36,19 @@ public interface DocumentApi {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     ResponseEntity<?> deleteDocument(@PathVariable long document_id);
 
-    @RequestMapping(value = "/fromfile", method = RequestMethod.POST)
-    ResponseEntity<Document> createDocumentfromFile(@ApiParam(value = "", required = true) @RequestBody Bitstream bitstream);
+    @ApiOperation(
+            value = "Create a document",
+            notes = "Create a document uploading a file",
+            response = DocumentDTO.class
+    )
+    @RequestMapping(
+            value = "/upload",
+            headers = ("content-type=multipart/*"),
+            method = RequestMethod.POST
+    )
+    ResponseEntity<?> createDocumentFromFile(
+        @ApiParam(value = "file", required = true) MultipartFile file,
+        @CurrentUser User user
+    ) throws IOException;
 }
 

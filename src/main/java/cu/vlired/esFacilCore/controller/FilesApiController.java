@@ -1,8 +1,6 @@
 package cu.vlired.esFacilCore.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cu.vlired.esFacilCore.api.FilesApi;
 import cu.vlired.esFacilCore.components.ResponsesHelper;
 import cu.vlired.esFacilCore.constants.Condition;
 import cu.vlired.esFacilCore.model.Bitstream;
@@ -29,7 +27,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-public class FilesApiController implements FilesApi {
+public class FilesApiController {
 
     private BitstreamService bitstreamService;
     private XMLService xmlService;
@@ -52,44 +50,6 @@ public class FilesApiController implements FilesApi {
         this.responseHelper = responseHelper;
         this.metadataResolver = metadataResolver;
         this.documentRepository = documentRepository;
-    }
-
-    /**
-     * Get a Multipart file and convert it to a Document
-     * with this multipart file as bitstream
-     * All document data are empty because
-     * this method dont use any third party service
-     *
-     * @param file - The multipart file
-     * @return - The created document
-     * @throws IOException - On IO Error
-     */
-    public ResponseEntity<Document> CreateDocumentFromFile(
-        @RequestParam(value = "file") MultipartFile file
-    ) throws IOException {
-
-        // Create a bitstream using the file
-        Bitstream bitstream = bitstreamService.createBitstreamFromFile(file);
-
-        // Getting the bitstream metadata from Darkaiv
-        Map<String, List<String>> jsonDarkaiv = metadataResolver.getMetadataFromFile(file);
-
-        // I need to Map the Darkaiv response to a CSL format
-        // mapData has the darkaiv key to => CSL key
-        byte[] mapData = Files.readAllBytes(
-                Paths.get(dir_config, "DarkaivApiToCSLMap.json")
-        );
-
-        // Create the document
-        Document doc = new Document();
-        doc.setData(jsonDarkaiv);
-        doc.addBitstream(bitstream);
-
-        // By default when submit a new file is in process
-        doc.setCondition(Condition.IN_PROCESS);
-        documentRepository.save(doc);
-
-        return responseHelper.ok(doc);
     }
 
     //Servicio para crear ficheros
