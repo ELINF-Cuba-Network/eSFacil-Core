@@ -186,7 +186,7 @@
 										}
 									]
 								},
-								"method": "POST",
+								"method": "PUT",
 								"header": [
 									{
 										"key": "Content-Type",
@@ -199,15 +199,16 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"username\": \"jorel2\",\n\t\"password\": \"ThePassword\",\n\t\"firstname\": \"Jorge\",\n\t\"lastname\": \"Gomez\",\n\t\"email\": \"elpescao2@gmail.com\",\n\t\"active\": true\n}"
+									"raw": "{\n\t\"username\": \"assange\",\n\t\"password\": \"ThePassword\",\n\t\"firstname\": \"Jorge Junior\",\n\t\"lastname\": \"Gomez\",\n\t\"roles\": [\"ROLE_ADMIN\"],\n\t\"email\": \"assange@gmail.com\",\n\t\"active\": false\n}"
 								},
 								"url": {
-									"raw": "{{base_url}}/users",
+									"raw": "{{base_url}}/users/5ec5453c-488d-44f0-9621-032ff0f6a116",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"users"
+										"users",
+										"5ec5453c-488d-44f0-9621-032ff0f6a116"
 									]
 								}
 							},
@@ -226,7 +227,7 @@
 										}
 									]
 								},
-								"method": "POST",
+								"method": "PATCH",
 								"header": [
 									{
 										"key": "Content-Type",
@@ -239,15 +240,16 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"username\": \"jorel2\",\n\t\"password\": \"ThePassword\",\n\t\"firstname\": \"Jorge\",\n\t\"lastname\": \"Gomez\",\n\t\"email\": \"elpescao2@gmail.com\",\n\t\"active\": true\n}"
+									"raw": "{\n\t\"email\": \"mauel@twitter.com\"\n}"
 								},
 								"url": {
-									"raw": "{{base_url}}/users",
+									"raw": "{{base_url}}/users/5ec5453c-488d-44f0-9621-032ff0f6a116",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"users"
+										"users",
+										"5ec5453c-488d-44f0-9621-032ff0f6a116"
 									]
 								}
 							},
@@ -270,13 +272,13 @@
 								"header": [],
 								"body": {},
 								"url": {
-									"raw": "{{base_url}}/users/68e5c42b-e5ff-4f13-bfc2-031a1cbaa9f9",
+									"raw": "{{base_url}}/users/5ec5453c-488d-44f0-9621-032ff0f6a116",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"users",
-										"68e5c42b-e5ff-4f13-bfc2-031a1cbaa9f9"
+										"5ec5453c-488d-44f0-9621-032ff0f6a116"
 									]
 								}
 							},
@@ -383,7 +385,7 @@
 								"header": [],
 								"body": {},
 								"url": {
-									"raw": "{{base_url}}/users?q=jorel",
+									"raw": "{{base_url}}/users?q=assange",
 									"host": [
 										"{{base_url}}"
 									],
@@ -393,7 +395,7 @@
 									"query": [
 										{
 											"key": "q",
-											"value": "jorel"
+											"value": "assange"
 										},
 										{
 											"key": null,
@@ -446,6 +448,108 @@
 						}
 					],
 					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Document",
+			"description": "",
+			"item": [
+				{
+					"name": "upload",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update document",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "patch document",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listing",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "me",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
 				}
 			]
 		},

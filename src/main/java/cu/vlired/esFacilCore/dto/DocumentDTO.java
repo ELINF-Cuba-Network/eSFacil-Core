@@ -13,6 +13,7 @@ public class DocumentDTO extends BaseDTO {
 
     private DocumentDataDTO data;
     private List<Bitstream> bitstreams;
+    private String condition;
     private UserDTO person;
 
 }

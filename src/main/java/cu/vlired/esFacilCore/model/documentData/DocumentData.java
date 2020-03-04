@@ -2,14 +2,15 @@ package cu.vlired.esFacilCore.model.documentData;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Setter @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Builder
 public class DocumentData {
     private List<Author> author;
     private List<String> title;

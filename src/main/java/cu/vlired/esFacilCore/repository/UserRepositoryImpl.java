@@ -23,10 +23,10 @@ public class UserRepositoryImpl implements CustomUserRepository {
     I18n i18n;
 
     private final String[] filterableFields =
-            new String[]{"username", "firstname", "lastname", "email"};
+        new String[]{"username", "firstname", "lastname", "email"};
 
     private final String[] sortableFields =
-            new String[]{"username", "firstname", "lastname", "email", "active"};
+        new String[]{"username", "firstname", "lastname", "email", "active"};
 
     @Override
     public List<User> list(Page page) {
@@ -39,7 +39,7 @@ public class UserRepositoryImpl implements CustomUserRepository {
 
             if (Arrays.stream(sortableFields).noneMatch(f -> f.equals(page.getSort()))) {
                 throw new FieldNotFilterableException(
-                        i18n.t("app.field.not.filterable", ArrayUtils.toArray(page.getSort()))
+                    i18n.t("app.field.not.filterable", ArrayUtils.toArray(page.getSort()))
                 );
             }
 
@@ -59,8 +59,8 @@ public class UserRepositoryImpl implements CustomUserRepository {
         if (!page.getQ().isBlank()) {
             List<Predicate> predicates = new LinkedList<>();
             Arrays
-                    .stream(filterableFields)
-                    .forEach(f -> predicates.add(criteriaBuilder.like(from.get(f), "%" + page.getQ() + "%")));
+                .stream(filterableFields)
+                .forEach(f -> predicates.add(criteriaBuilder.like(from.get(f), "%" + page.getQ() + "%")));
 
             Predicate or = criteriaBuilder.or(predicates.toArray(new Predicate[predicates.size()]));
             query.where(or);

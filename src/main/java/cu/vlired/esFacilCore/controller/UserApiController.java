@@ -66,25 +66,13 @@ public class UserApiController implements UserApi {
 
     @Override
     public ResponseEntity<?> updateUser(UUID id, @RequestBody UserDTO user) {
-
-        if (!userRepository.existsById(id)) {
-            throw new ResourceNotFoundException(
-                    i18n.t("app.security.user.id.not.found", ArrayUtils.toArray(id))
-            );
-        }
-
         var updatedUser = userService.update(id, user);
         return responseHelper.ok(updatedUser);
     }
 
     @Override
     public ResponseEntity<?> patchUser(UUID id, @RequestBody PatchUserDTO user) {
-        User old = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        i18n.t("app.security.user.id.not.found", ArrayUtils.toArray(id))
-                ));
-
-        var updatedUser = userService.patch(old, user);
+        var updatedUser = userService.patch(id, user);
         return responseHelper.ok(updatedUser);
     }
 

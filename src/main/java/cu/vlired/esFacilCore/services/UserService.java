@@ -10,7 +10,6 @@ import cu.vlired.esFacilCore.repository.UserRepository;
 import cu.vlired.esFacilCore.util.Page;
 import org.apache.commons.lang3.ArrayUtils;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,25 +23,22 @@ public class UserService {
     final
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Value("${app.default-page-size}")
-    private int limit;
-
-    @Value("${app.max-page-size}")
-    private int max;
-
     private final DTOUtilService dtoUtilService;
     private final UserRepository userRepository;
+    private final PaginateService paginateService;
     private final I18n i18n;
 
     public UserService(
             BCryptPasswordEncoder bCryptPasswordEncoder,
             DTOUtilService dtoUtilService,
             UserRepository userRepository,
+            PaginateService paginateService,
             I18n i18n
     ) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.dtoUtilService = dtoUtilService;
         this.userRepository = userRepository;
+        this.paginateService = paginateService;
         this.i18n = i18n;
     }
 
@@ -60,6 +56,12 @@ public class UserService {
     }
 
     public UserDTO update(UUID id, UserDTO userDTO) {
+        if (!userRepository.existsById(id)) {
+            throw new ResourceNotFoundException(
+                i18n.t("app.security.user.id.not.found", ArrayUtils.toArray(id))
+            );
+        }
+
         User user = dtoUtilService.convertToEntity(userDTO, User.class);
         user.setId(id);
 
@@ -76,7 +78,11 @@ public class UserService {
         return dtoUtilService.convertToDTO(newUser, UserDTO.class);
     }
 
-    public UserDTO patch(User user, PatchUserDTO patchUserDTO) {
+    public UserDTO patch(UUID id, PatchUserDTO patchUserDTO) {
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException(
+                i18n.t("app.security.user.id.not.found", ArrayUtils.toArray(id))
+            ));
 
         var modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setSkipNullEnabled(true);
@@ -105,9 +111,7 @@ public class UserService {
     }
 
     public List<UserDTO> list(Page page) {
-        page.setLimit(page.getLimit() == 0 || page.getLimit() > max? limit : page.getLimit());
-        page.setQ(page.getQ() == null ? "" : page.getQ());
-
+        paginateService.preProcess(page);
         List<User> list = userRepository.list(page);
 
         return list.stream()

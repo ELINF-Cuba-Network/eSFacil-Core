@@ -36,6 +36,10 @@ public class DTOUtilService {
         return res;
     }
 
+    public <T> T convertToPOJO(Object source, Class<T> target) {
+        return map(source, target);
+    }
+
     public <T extends BaseDTO> T convertToDTO(Object source, Class<T> target) {
         return map(source, target);
     }

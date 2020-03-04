@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.*;
 
+import cu.vlired.esFacilCore.constants.Condition;
 import cu.vlired.esFacilCore.model.documentData.DocumentData;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +32,7 @@ public class Document extends BaseEntity {
     private List<Bitstream> bitstreams;
 
     @Column(name = "condition")
-    private String condition;
+    private String condition = Condition.IN_PROCESS;
 
     @ManyToOne
     @JoinColumn(name = "person")
