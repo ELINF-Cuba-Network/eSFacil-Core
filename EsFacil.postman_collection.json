@@ -34,7 +34,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"username\": \"jjbenitez@uci.cu\",\n\t\"password\": \"Baby2018\"\n}"
+							"raw": "{\n\t\"username\": \"admin@vlired.cu\",\n\t\"password\": \"admin123\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/sign-in",
@@ -108,7 +108,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"jjbenitez026@uci.cu\",\n  \"password\": \"Baby2018\",\n  \"firstname\": \"Jose\",\n  \"lastname\": \"Javier\",\n  \"username\": \"jjbenitez026\"\n}"
+							"raw": "{\n  \"email\": \"jjbenitez027@uci.cu\",\n  \"password\": \"Baby2018\",\n  \"firstname\": \"Jose\",\n  \"lastname\": \"Javier\",\n  \"username\": \"jjbenitez027\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/sign-up",
@@ -159,7 +159,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"username\": \"jorel2\",\n\t\"password\": \"ThePassword\",\n\t\"firstname\": \"Jorge\",\n\t\"lastname\": \"Gomez\",\n\t\"email\": \"elpescao2@gmail.com\",\n\t\"active\": true\n}"
+									"raw": "{\n\t\"username\": \"mailo\",\n\t\"password\": \"ThePassword\",\n\t\"firstname\": \"Jorge\",\n\t\"lastname\": \"Gomez\",\n\t\"email\": \"mailo@gmail.com\",\n\t\"active\": true\n}"
 								},
 								"url": {
 									"raw": "{{base_url}}/users",
@@ -240,7 +240,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"email\": \"mauel@twitter.com\"\n}"
+									"raw": "{\n\t\"email\": \"vvv@twitter.com\"\n}"
 								},
 								"url": {
 									"raw": "{{base_url}}/users/5ec5453c-488d-44f0-9621-032ff0f6a116",
@@ -353,6 +353,16 @@
 						{
 							"name": "list sorting",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"body": {},
@@ -381,6 +391,16 @@
 						{
 							"name": "list filter",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"body": {},
@@ -458,11 +478,37 @@
 				{
 					"name": "upload",
 					"request": {
-						"method": "GET",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"description": "",
+									"type": "file"
+								}
+							]
+						},
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/document/upload",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"document",
+								"upload"
+							]
 						}
 					},
 					"response": []
@@ -470,11 +516,35 @@
 				{
 					"name": "create",
 					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"author\": [\n            {\n                \"family\": \"de Tobias\",\n                \"given\": \"El Bueno\"\n            }\n        ],\n        \"title\": [\n            \"Talibanes II\"\n        ],\n        \"type\": [\n            \"Journal\"\n        ],\n        \"publisher\": [\n            \"Loulogio\"\n        ],\n        \"issn-type\": [\n            {\n                \"value\": \"1073-449X\",\n                \"type\": \"print\"\n            }\n        ]\n    }"
+						},
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/document",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"document"
+							]
 						}
 					},
 					"response": []
@@ -482,11 +552,28 @@
 				{
 					"name": "by id",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/document/da7a9261-9e48-4f9a-a2f7-eab415046f7f",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"document",
+								"da7a9261-9e48-4f9a-a2f7-eab415046f7f"
+							]
 						}
 					},
 					"response": []
@@ -494,11 +581,28 @@
 				{
 					"name": "delete by id",
 					"request": {
-						"method": "GET",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/document/d4bff151-e665-44ae-974a-1c0d7928fbfc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"document",
+								"d4bff151-e665-44ae-974a-1c0d7928fbfc"
+							]
 						}
 					},
 					"response": []
@@ -506,11 +610,36 @@
 				{
 					"name": "update document",
 					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": [\n        \"Canoa\"\n    ]\n}"
+						},
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/document/18937080-5b7b-4dab-b47b-4fab88c2ea6f",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"document",
+								"18937080-5b7b-4dab-b47b-4fab88c2ea6f"
+							]
 						}
 					},
 					"response": []
@@ -518,11 +647,36 @@
 				{
 					"name": "patch document",
 					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {},
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"type\": [\n        \"book\"\n    ]\n}"
+						},
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/document/18937080-5b7b-4dab-b47b-4fab88c2ea6f",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"document",
+								"18937080-5b7b-4dab-b47b-4fab88c2ea6f"
+							]
 						}
 					},
 					"response": []
@@ -530,11 +684,37 @@
 				{
 					"name": "listing",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/document?page=0&limit=2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"document"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "2"
+								}
+							]
 						}
 					},
 					"response": []
@@ -542,11 +722,38 @@
 				{
 					"name": "me",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/document/me?page=0&limit=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"document",
+								"me"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								}
+							]
 						}
 					},
 					"response": []
@@ -554,33 +761,200 @@
 			]
 		},
 		{
-			"name": "delete batch",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "[\n\t{\n\t\t\"name\": \"pepin\",\n\t\t\"extension\": \"png\",\n\t\t\"code\": \"xxx\",\n\t\t\"id\": \"xxx\"\n\t}\n]"
+			"name": "Bitstream",
+			"description": "",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"description": "",
+									"type": "file"
+								},
+								{
+									"key": "description",
+									"value": "Hala Madrid",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/document/5ece23f3-19ab-4bcd-8e81-6ad322a14467/bitstream",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"document",
+								"5ece23f3-19ab-4bcd-8e81-6ad322a14467",
+								"bitstream"
+							]
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/bitstream/batch",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"bitstream",
-						"batch"
-					]
+				{
+					"name": "Download",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{base_url}}/bitstream/a551e57a-eb48-4a8e-b3d0-c21692724f7a/download",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bitstream",
+								"a551e57a-eb48-4a8e-b3d0-c21692724f7a",
+								"download"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{base_url}}/bitstream/9214d089-b589-49ca-bf0e-73244232293b",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bitstream",
+								"9214d089-b589-49ca-bf0e-73244232293b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Batch create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"description": "",
+									"type": "file"
+								},
+								{
+									"key": "file",
+									"description": "",
+									"type": "file"
+								},
+								{
+									"key": "description",
+									"value": "Precipicio",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/document/5ece23f3-19ab-4bcd-8e81-6ad322a14467/bitstreams",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"document",
+								"5ece23f3-19ab-4bcd-8e81-6ad322a14467",
+								"bitstreams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Batch delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\"52b95b7a-062c-4e90-9f47-c83e6f7bca19\", \"3a02dcdf-cb3f-4007-8197-a4308260a64c\"]"
+						},
+						"url": {
+							"raw": "{{base_url}}/bitstreams",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bitstreams"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	]
 }
