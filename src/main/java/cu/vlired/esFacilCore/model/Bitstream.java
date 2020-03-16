@@ -23,6 +23,9 @@ public class Bitstream  extends BaseEntity {
     @Column(name = "code")
     private String code;
 
+    @Column(name = "description")
+    private String description = "";
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_id")
     @JsonBackReference

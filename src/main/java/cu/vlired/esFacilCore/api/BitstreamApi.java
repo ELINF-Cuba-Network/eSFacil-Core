@@ -1,39 +1,86 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cu.vlired.esFacilCore.api;
 
 import cu.vlired.esFacilCore.model.Bitstream;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
 
 
-/**
- *
- * @author luizo
- */
- @Api( value = "Bitstreams", tags = {"Bitstream"})
-    public interface BitstreamApi {
+@Api(value = "Bitstreams", tags = {"Bitstream"})
+public interface BitstreamApi {
 
-        @RequestMapping(value = "/bitstream", method = RequestMethod.POST)
-        ResponseEntity<Bitstream> createBitstream(@ApiParam(value = "", required = true) @RequestBody Bitstream bitstream);
+    @ApiOperation(
+        value = "Attach bitstream to a document",
+        response = Bitstream.class
+    )
+    @RequestMapping(
+        value = "/document/{document}/bitstream",
+        headers = ("content-type=multipart/*"),
+        method = RequestMethod.POST
+    )
+    ResponseEntity<?> uploadBitstream(
+        @ApiParam(required = true) @PathVariable UUID document,
+        @ApiParam(required = true) @RequestParam("file") MultipartFile file,
+        @ApiParam() @RequestParam("description") String description
+    ) throws IOException;
 
-        @RequestMapping(value = "/bitstreams", method = RequestMethod.GET)
-        ResponseEntity<List<Bitstream>>  getAllBitstreams();
+    @ApiOperation(
+        value = "Attach bitstreams to a document",
+        response = Bitstream.class
+    )
+    @RequestMapping(
+        value = "/document/{document}/bitstreams",
+        headers = ("content-type=multipart/*"),
+        method = RequestMethod.POST
+    )
+    ResponseEntity<?> uploadBitstreams(
+        @ApiParam(required = true) @PathVariable UUID document,
+        @ApiParam(required = true) @RequestParam("file") MultipartFile[] files,
+        @ApiParam() @RequestParam("description") String description
+    ) throws IOException;
 
-        @RequestMapping(value = "/bitstream/search", method = RequestMethod.GET)
-        ResponseEntity<List<Bitstream>>  searchBitstream(@ApiParam(value = "", required = true) @RequestParam String term);
-        
-        @RequestMapping(value = "/bitstream/{id}", method = RequestMethod.DELETE)
-        ResponseEntity<?> deleteBitstream(@PathVariable long bitstream_id);
+    @ApiOperation(
+        value = "Download bitstream",
+        response = MultipartFile.class
+    )
+    @RequestMapping(
+        value = "/bitstream/{bitstream}/download",
+        method = RequestMethod.GET
+    )
+    byte[] downloadBitstream(
+        @ApiParam(required = true) @PathVariable UUID bitstream
+    ) throws IOException;
 
- }
+    @ApiOperation(
+        value = "Delete bitstream"
+    )
+    @RequestMapping(
+        value = "/bitstream/{bitstream}",
+        method = RequestMethod.DELETE
+    )
+    ResponseEntity<?> deleteBitstream(
+        @PathVariable UUID bitstream
+    );
+
+    @ApiOperation(
+        value = "Delete bitstreams"
+    )
+    @RequestMapping(
+        value = "/bitstreams",
+        method = RequestMethod.DELETE
+    )
+    ResponseEntity<?> deleteBitstreams(
+        @RequestBody @Valid UUID[] bitstreams
+    );
+
+}

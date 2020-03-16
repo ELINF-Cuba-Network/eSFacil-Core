@@ -7,6 +7,7 @@ package cu.vlired.esFacilCore.constants;
 
 public final class Condition {
 
+    public static String WORKSPACE = "WORKSPACE";
     public static String IN_PROCESS = "IN_PROCESS";
     public static String IN_REVIEWER = "IN_REVIEWER";
     public static String SUBMITTED = "SUBMITTED";

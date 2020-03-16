@@ -6,17 +6,21 @@ import cu.vlired.esFacilCore.constants.Roles;
 import cu.vlired.esFacilCore.dto.UserDTO;
 import cu.vlired.esFacilCore.dto.documentData.DocumentDataDTO;
 import cu.vlired.esFacilCore.exception.ResourceNotFoundException;
+import cu.vlired.esFacilCore.model.BaseEntity;
 import cu.vlired.esFacilCore.model.Bitstream;
 import cu.vlired.esFacilCore.model.Document;
 import cu.vlired.esFacilCore.model.documentData.DocumentData;
 import cu.vlired.esFacilCore.model.User;
 import cu.vlired.esFacilCore.dto.DocumentDTO;
+import cu.vlired.esFacilCore.repository.BitstreamRepository;
 import cu.vlired.esFacilCore.repository.DocumentRepository;
 import cu.vlired.esFacilCore.util.Page;
 import org.apache.commons.lang3.ArrayUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -27,6 +31,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@EnableTransactionManagement
 public class DocumentService {
 
     @Value("${dir.config}")
@@ -34,6 +39,7 @@ public class DocumentService {
 
     private final BitstreamService bitstreamService;
     private final DocumentRepository documentRepository;
+    private final BitstreamRepository bitstreamRepository;
     private final DTOUtilService dtoUtilService;
     private final PaginateService paginateService;
     private final I18n i18n;
@@ -42,6 +48,7 @@ public class DocumentService {
     public DocumentService(
         BitstreamService bitstreamService,
         DocumentRepository documentRepository,
+        BitstreamRepository bitstreamRepository,
         DTOUtilService dtoUtilService,
         PaginateService paginateService,
         I18n i18n,
@@ -49,6 +56,7 @@ public class DocumentService {
     ) {
         this.bitstreamService = bitstreamService;
         this.documentRepository = documentRepository;
+        this.bitstreamRepository = bitstreamRepository;
         this.dtoUtilService = dtoUtilService;
         this.paginateService = paginateService;
         this.i18n = i18n;
@@ -93,9 +101,14 @@ public class DocumentService {
     }
 
     public void deleteById(UUID id) {
-        if (!documentRepository.existsById(id)) {
-            throw new ResourceNotFoundException(i18n.t("app.document.id.not.found", ArrayUtils.toArray(id)));
-        }
+        Document document = documentRepository
+            .findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException(i18n.t("app.document.id.not.found", ArrayUtils.toArray(id))));
+
+        document.getBitstreams()
+            .stream()
+            .map(BaseEntity::getId)
+            .forEach(bitstreamService::deleteById);
 
         documentRepository.deleteById(id);
     }
@@ -131,8 +144,8 @@ public class DocumentService {
         return dtoUtilService.convertToDTO(newDocument, DocumentDTO.class);
     }
 
+    @Transactional
     public DocumentDTO createFromFile(MultipartFile file, User user) throws IOException {
-        // Create a bitstream using the file
         Bitstream bitstream = bitstreamService
             .createBitstreamFromFile(file);
 
@@ -154,6 +167,9 @@ public class DocumentService {
         doc.setPerson(user);
 
         Document document = documentRepository.save(doc);
+
+        bitstream.setDocument(doc);
+        bitstreamRepository.save(bitstream);
 
         return dtoUtilService.convertToDTO(document, DocumentDTO.class);
     }

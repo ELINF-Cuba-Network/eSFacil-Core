@@ -26,13 +26,14 @@ public class Document extends BaseEntity {
 
     @OneToMany(
         mappedBy = "document",
-        orphanRemoval = true
+        orphanRemoval = true,
+        cascade = CascadeType.REMOVE
     )
     @JsonManagedReference
     private List<Bitstream> bitstreams;
 
     @Column(name = "condition")
-    private String condition = Condition.IN_PROCESS;
+    private String condition = Condition.WORKSPACE;
 
     @ManyToOne
     @JoinColumn(name = "person")
