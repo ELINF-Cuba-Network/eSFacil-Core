@@ -595,13 +595,13 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "{{base_url}}/document/d4bff151-e665-44ae-974a-1c0d7928fbfc",
+							"raw": "{{base_url}}/document/da152925-aa51-4ae1-839f-291852bfd58d",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"document",
-								"d4bff151-e665-44ae-974a-1c0d7928fbfc"
+								"da152925-aa51-4ae1-839f-291852bfd58d"
 							]
 						}
 					},
@@ -698,22 +698,12 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "{{base_url}}/document?page=0&limit=2",
+							"raw": "{{base_url}}/document",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"document"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "0"
-								},
-								{
-									"key": "limit",
-									"value": "2"
-								}
 							]
 						}
 					},
@@ -905,13 +895,13 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/document/5ece23f3-19ab-4bcd-8e81-6ad322a14467/bitstreams",
+							"raw": "{{base_url}}/document/da152925-aa51-4ae1-839f-291852bfd58d/bitstreams",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"document",
-								"5ece23f3-19ab-4bcd-8e81-6ad322a14467",
+								"da152925-aa51-4ae1-839f-291852bfd58d",
 								"bitstreams"
 							]
 						}
@@ -949,6 +939,43 @@
 							],
 							"path": [
 								"bitstreams"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Workflow",
+			"description": "",
+			"item": [
+				{
+					"name": "Process Document",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{base_url}}/document/workflow/7eace6b7-9b47-4155-a6f1-2d11dd26be83/process",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"document",
+								"workflow",
+								"7eace6b7-9b47-4155-a6f1-2d11dd26be83",
+								"process"
 							]
 						}
 					},
