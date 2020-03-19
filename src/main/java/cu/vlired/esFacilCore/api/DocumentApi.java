@@ -2,10 +2,7 @@ package cu.vlired.esFacilCore.api;
 
 import cu.vlired.esFacilCore.dto.DocumentDTO;
 import cu.vlired.esFacilCore.dto.documentData.DocumentDataDTO;
-import cu.vlired.esFacilCore.model.Document;
 import cu.vlired.esFacilCore.model.User;
-import cu.vlired.esFacilCore.dto.UserDTO;
-import cu.vlired.esFacilCore.model.documentData.DocumentData;
 import cu.vlired.esFacilCore.security.CurrentUser;
 import cu.vlired.esFacilCore.util.Page;
 import io.swagger.annotations.Api;

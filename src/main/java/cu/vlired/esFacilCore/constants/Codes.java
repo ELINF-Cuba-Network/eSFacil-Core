@@ -8,4 +8,6 @@ public final class Codes {
     public static String STORAGE_ERROR = "4003";
     public static String TOKEN_EXPIRED = "4004";
     public static String FIELD_NOT_FILTERABLE = "4005";
+    public static String INVALID_WORKFLOW = "4006";
+    public static String VALIDATION_ERROR = "4007";
 }

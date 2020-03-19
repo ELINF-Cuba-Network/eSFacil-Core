@@ -5,6 +5,7 @@ import cu.vlired.esFacilCore.constants.Codes;
 import cu.vlired.esFacilCore.exception.ApiError;
 import cu.vlired.esFacilCore.exception.BaseException;
 import cu.vlired.esFacilCore.exception.ResourceAlreadyTakenException;
+import cu.vlired.esFacilCore.exception.ValidationException;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.core.Ordered;
@@ -16,11 +17,14 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.Date;
+import java.util.Set;
 
 @Log4j2
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -62,7 +66,7 @@ public class ErrorApiHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
         log.error(ExceptionUtils.getStackTrace(ex));
 
-        var error = buildError(ex.getMessage());
+        var error = buildError(new ValidationException(ex.getMessage()));
         return rh.buildResponse(error, HttpStatus.BAD_REQUEST);
     }
 
