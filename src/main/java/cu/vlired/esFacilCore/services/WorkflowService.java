@@ -2,27 +2,42 @@ package cu.vlired.esFacilCore.services;
 
 import cu.vlired.esFacilCore.components.I18n;
 import cu.vlired.esFacilCore.constants.Condition;
+import cu.vlired.esFacilCore.dto.RejectDTO;
 import cu.vlired.esFacilCore.exception.InvalidWorkflowException;
 import cu.vlired.esFacilCore.exception.ResourceNotFoundException;
 import cu.vlired.esFacilCore.model.Document;
+import cu.vlired.esFacilCore.model.Rejection;
+import cu.vlired.esFacilCore.model.Revision;
+import cu.vlired.esFacilCore.model.User;
 import cu.vlired.esFacilCore.repository.DocumentRepository;
+import cu.vlired.esFacilCore.repository.RejectionRepository;
+import cu.vlired.esFacilCore.repository.RevisionRepository;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
+@EnableTransactionManagement
 public class WorkflowService {
 
     private final I18n i18n;
     private final DocumentRepository documentRepository;
+    private final RevisionRepository revisionRepository;
+    private final RejectionRepository rejectionRepository;
 
     WorkflowService(
         I18n i18n,
-        DocumentRepository documentRepository
+        DocumentRepository documentRepository,
+        RevisionRepository revisionRepository,
+        RejectionRepository rejectionRepository
     ) {
         this.i18n = i18n;
         this.documentRepository = documentRepository;
+        this.revisionRepository = revisionRepository;
+        this.rejectionRepository = rejectionRepository;
     }
 
     public void processDocument(UUID documentId) {
@@ -36,6 +51,46 @@ public class WorkflowService {
 
         document.setCondition(Condition.IN_PROCESS);
         documentRepository.save(document);
+    }
+
+    @Transactional
+    public void reviewDocument(UUID documentId, User user) {
+        Document document = documentRepository.findById(documentId)
+            .orElseThrow(
+                () -> new ResourceNotFoundException(
+                    i18n.t("app.document.id.not.found", ArrayUtils.toArray(documentId)))
+            );
+
+        checkWorkflowRules(document, Condition.IN_REVIEWER);
+
+        document.setCondition(Condition.IN_REVIEWER);
+        documentRepository.save(document);
+
+        Revision revision = new Revision();
+        revision.setDocument(document);
+        revision.setPerson(user);
+        revisionRepository.save(revision);
+    }
+
+    @Transactional
+    public void rejectDocument(UUID documentId, RejectDTO data, User user) {
+        Document document = documentRepository.findById(documentId)
+            .orElseThrow(
+                () -> new ResourceNotFoundException(
+                    i18n.t("app.document.id.not.found", ArrayUtils.toArray(documentId)))
+            );
+
+        checkWorkflowRules(document, Condition.REJECTED);
+
+        document.setCondition(Condition.REJECTED);
+        documentRepository.save(document);
+
+        Rejection rejection = new Rejection();
+        rejection.setMessage(data.getMessage());
+        rejection.setDocument(document);
+        rejection.setPerson(user);
+
+        rejectionRepository.save(rejection);
     }
 
     public void checkWorkflowRules(Document document, String to) throws InvalidWorkflowException {

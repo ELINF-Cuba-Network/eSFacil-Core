@@ -10,6 +10,8 @@ import cu.vlired.esFacilCore.repository.UserRepository;
 import cu.vlired.esFacilCore.util.Page;
 import org.apache.commons.lang3.ArrayUtils;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -117,6 +119,13 @@ public class UserService {
         return list.stream()
                 .map(user -> dtoUtilService.convertToDTO(user, UserDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    public User getCurrent() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+
+        return (User) principal;
     }
 
     public UserDTO status(User user) {
