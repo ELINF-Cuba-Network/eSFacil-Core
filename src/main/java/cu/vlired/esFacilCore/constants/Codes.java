@@ -10,4 +10,5 @@ public final class Codes {
     public final static String FIELD_NOT_FILTERABLE = "4005";
     public final static String INVALID_WORKFLOW = "4006";
     public final static String VALIDATION_ERROR = "4007";
+    public final static String FORBIDDEN_ERROR = "4008";
 }
