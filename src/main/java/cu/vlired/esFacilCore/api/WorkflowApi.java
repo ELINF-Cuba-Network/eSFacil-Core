@@ -67,4 +67,18 @@ public interface WorkflowApi {
         @CurrentUser User currentUser
     );
 
+    @ApiOperation(
+        value = "Submit document"
+    )
+    @RequestMapping(
+        value = "/{id}/submit/config/{configId}",
+        method = RequestMethod.POST
+    )
+    ResponseEntity<?> submitDocument(
+        @ApiParam(required = true)
+        @PathVariable UUID id,
+        @PathVariable UUID configId,
+        @CurrentUser User currentUser
+    );
+
 }

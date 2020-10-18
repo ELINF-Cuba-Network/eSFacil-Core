@@ -4,14 +4,13 @@
     <Properties>
         <Property name="LOG_LOC">logs</Property>
         <Property name="MAX">5</Property>
-        <Property name="LOG_PATTERN">%d{yyyy.MM.dd HH:mm:ss.SSS} [%p] %c: %m%n
-        </Property>
+        <Property name="LOG_PATTERN">%d{yyyy.MM.dd HH:mm:ss.SSS} [%p] %c: %m%n</Property>
     </Properties>
 
     <Appenders>
         <RollingFile name="FILE"
                      fileName="${LOG_LOC}/esfacil_latest.log"
-                     filePattern="**${LOG_LOC}/%d{yyyy-MM-dd_HH}**_esfacil_%i.log">
+                     filePattern="${LOG_LOC}/esfacil-%d{yyyy-MM-dd_HH}-%i.log">
             <PatternLayout>
                 <Pattern>${LOG_PATTERN}</Pattern>
             </PatternLayout>
@@ -19,28 +18,26 @@
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1"/>
             </Policies>
-
-            <DefaultRolloverStrategy max="${MAX}" />
         </RollingFile>
 
         <Console name="STDOUT" target="SYSTEM_OUT" follow="true">
-            <PatternLayout pattern="${LOG_PATTERN}" />
+            <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
     </Appenders>
 
     <Loggers>
-        <Logger name="cu.vlired.esFacilCore" level="debug" />
+        <Logger name="cu.vlired.esFacilCore" level="debug"/>
 
         <Logger name="org.springframework.web" level="info"
-                additivity="false" />
+                additivity="false"/>
 
         <Logger name="file" level="info" additivity="false">
-            <appender-ref ref="FILE" />
+            <appender-ref ref="FILE"/>
         </Logger>
 
         <Root level="warn">
-            <AppenderRef ref="FILE" />
-            <AppenderRef ref="STDOUT" />
+            <AppenderRef ref="FILE"/>
+            <AppenderRef ref="STDOUT"/>
         </Root>
     </Loggers>
 

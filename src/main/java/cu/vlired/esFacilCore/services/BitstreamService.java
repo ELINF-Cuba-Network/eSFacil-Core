@@ -60,6 +60,8 @@ public class BitstreamService {
                 i18n.t("app.document.id.not.found", ArrayUtils.toArray(documentId))
         ));
 
+        log.info("Document " + document);
+
         Bitstream bitstream = createBitstreamFromFile(file);
         bitstream.setDocument(document);
         bitstream.setDescription(description);
@@ -103,8 +105,13 @@ public class BitstreamService {
      */
     public Bitstream createBitstreamFromFile(MultipartFile file) throws IOException
     {
+        log.info("Creating File");
+
         String name = file.getOriginalFilename();
         String code = UUID.randomUUID().toString();
+
+        log.info("Name: " + name);
+        log.info("Code: " + code);
 
         // Store the new file
         storageService.store(file, code);

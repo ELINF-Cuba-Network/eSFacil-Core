@@ -41,15 +41,17 @@ public class Startup implements CommandLineRunner {
     private void createDirectories() {
         File directory = new File(assetstore);
 
-        log.debug(String.format("Assetstore directory exist? %b", directory.exists()));
+        log.info(String.format("Assetstore directory exist? %b", directory.exists()));
+
         if (!directory.exists()) {
-            directory.mkdir();
+            boolean mkdir = directory.mkdir();
+            log.info(String.format("Assetstore directory created? %b", mkdir));
         }
     }
 
     private void createFirstAdmin() {
         Optional<User> admin = userRepository.findByUsername("admin");
-        log.debug(String.format("Admin exist? %b", admin.isPresent()));
+        log.info(String.format("Admin exist? %b", admin.isPresent()));
 
         if (admin.isEmpty()) {
             User u = new User();

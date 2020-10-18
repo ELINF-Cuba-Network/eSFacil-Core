@@ -1,14 +1,16 @@
 package cu.vlired.esFacilCore.config;
 
+import org.hobsoft.spring.resttemplatelogger.LoggingCustomizer;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.client.RestTemplate;
+import java.net.http.HttpClient;
+import java.time.Duration;
 import java.util.Random;
 
 @Configuration
@@ -26,7 +28,9 @@ public class Beans {
 
     @Bean
     public RestTemplate restTemplate() {
-        return new RestTemplate();
+        return new RestTemplateBuilder()
+            .customizers(new LoggingCustomizer())
+            .build();
     }
 
     @Bean
@@ -44,6 +48,13 @@ public class Beans {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
         bean.setValidationMessageSource(messageSource());
         return bean;
+    }
+
+    @Bean
+    public HttpClient httpClient() {
+        return HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(20))
+            .build();
     }
 
 }

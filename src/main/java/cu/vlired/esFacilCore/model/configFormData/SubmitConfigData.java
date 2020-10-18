@@ -9,8 +9,11 @@ import lombok.*;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class SubmitConfigData {
+    protected String username;
+    protected String password;
     protected String ip;
     protected String port;
+    protected String schema;
     protected String endpoint;
     private String collectionId;
 }

@@ -20,7 +20,7 @@ services:
         - ~/.m2:/root/.m2
         working_dir: /app
         ports:
-        - "8080:8080"
+        - "8082:8080"
         command: mvn clean spring-boot:run
         depends_on:
         - es-facil-pg

@@ -12,6 +12,7 @@ import cu.vlired.esFacilCore.model.User;
 import cu.vlired.esFacilCore.repository.DocumentRepository;
 import cu.vlired.esFacilCore.repository.RejectionRepository;
 import cu.vlired.esFacilCore.repository.RevisionRepository;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 @Service
+@Log4j2
 @EnableTransactionManagement
 public class WorkflowService {
 
@@ -93,6 +95,21 @@ public class WorkflowService {
         rejectionRepository.save(rejection);
     }
 
+    public Document submitDocument(UUID documentId, User user) {
+        Document document = documentRepository.findById(documentId)
+            .orElseThrow(
+                () -> new ResourceNotFoundException(
+                    i18n.t("app.document.id.not.found", ArrayUtils.toArray(documentId)))
+            );
+
+        checkWorkflowRules(document, Condition.FOR_SUBMIT);
+
+        document.setCondition(Condition.FOR_SUBMIT);
+        documentRepository.save(document);
+
+        return document;
+    }
+
     public void checkWorkflowRules(Document document, String to) throws InvalidWorkflowException {
         switch (document.getCondition()) {
 
@@ -153,7 +170,7 @@ public class WorkflowService {
     }
 
     private void checkFailChange(Document document, String to) {
-        if (!to.equals(Condition.SUBMITTED) && !to.equals(Condition.FAIL)) {
+        if (!to.equals(Condition.SUBMITTED) && !to.equals(Condition.FAIL) && !to.equals(Condition.FOR_SUBMIT)) {
             throwException(document, to);
         }
     }

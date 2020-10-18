@@ -1,0 +1,3 @@
+[] Hacer el deposito, sin cola, seria un servicio que recibe un id de configuracion
+y un id de documento y lo deposita
+El servicio es el encargado de escoger la estrategia (DSPACE o ABCD)

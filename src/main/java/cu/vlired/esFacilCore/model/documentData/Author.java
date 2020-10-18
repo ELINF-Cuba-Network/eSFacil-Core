@@ -16,4 +16,9 @@ public class Author {
     private String given;
     private String uri;
     private List<Affiliation> affiliation;
+
+    @Override
+    public String toString() {
+        return family + ", " + given;
+    }
 }

@@ -11,6 +11,8 @@ import cu.vlired.esFacilCore.constants.Condition;
 import cu.vlired.esFacilCore.model.documentData.DocumentData;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -30,6 +32,7 @@ public class Document extends BaseEntity {
         cascade = CascadeType.REMOVE
     )
     @JsonManagedReference
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Bitstream> bitstreams;
 
     @Column(name = "condition")

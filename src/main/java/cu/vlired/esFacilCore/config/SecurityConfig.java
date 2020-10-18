@@ -106,6 +106,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.GET, "/console/**")
             .permitAll()
 
+            .antMatchers( "/rqueue/**")
+            .permitAll()
+
             .anyRequest()
             .authenticated();
 
