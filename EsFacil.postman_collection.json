@@ -786,13 +786,13 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/document/5ece23f3-19ab-4bcd-8e81-6ad322a14467/bitstream",
+							"raw": "{{base_url}}/document/e89201e7-f95c-41fe-8bbb-7a1ac2d16a38/bitstream",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"document",
-								"5ece23f3-19ab-4bcd-8e81-6ad322a14467",
+								"e89201e7-f95c-41fe-8bbb-7a1ac2d16a38",
 								"bitstream"
 							]
 						}
@@ -976,6 +976,267 @@
 								"workflow",
 								"7eace6b7-9b47-4155-a6f1-2d11dd26be83",
 								"process"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reviewDocument",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{base_url}}/document/workflow/12783588-c223-4780-ac0c-70f77df600c3/review",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"document",
+								"workflow",
+								"12783588-c223-4780-ac0c-70f77df600c3",
+								"review"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reject Document",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"message\": \"Oooooh Yea!\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/document/workflow/12783588-c223-4780-ac0c-70f77df600c3/reject",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"document",
+								"workflow",
+								"12783588-c223-4780-ac0c-70f77df600c3",
+								"reject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Document",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/document/workflow/e89201e7-f95c-41fe-8bbb-7a1ac2d16a38/submit/config/095f1f5b-a86b-4af6-bb3b-d46160859c46",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"document",
+								"workflow",
+								"e89201e7-f95c-41fe-8bbb-7a1ac2d16a38",
+								"submit",
+								"config",
+								"095f1f5b-a86b-4af6-bb3b-d46160859c46"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Submit config",
+			"description": "",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"active\": true,\n\t\"type\": \"DSPACE\",\n\t\"data\": {\n\t\t\"schema\": \"http\",\n\t\t\"username\": \"dspace@uci.cu\",\n\t\t\"password\": \"dsapce\",\n\t\t\"ip\": \"127.0.0.1:8080\",\n\t\t\"port\": \"80\",\n\t\t\"endpoint\": \"/rest\",\n\t\t\"collectionId\": \"735ab7e6-d89f-40b7-9d27-16dcfeecb6c5\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/submit-config",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"submit-config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"active\": true,\n\t\"type\": \"DSPACE\",\n\t\"data\": {\n\t\t\"schema\": \"http\",\n\t\t\"username\": \"dspace@uci.cu\",\n\t\t\"password\": \"dspace\",\n\t\t\"ip\": \"bedb2f752fce\",\n\t\t\"port\": \"8080\",\n\t\t\"endpoint\": \"rest\",\n\t\t\"collectionId\": \"735ab7e6-d89f-40b7-9d27-16dcfeecb6c5\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/submit-config/095f1f5b-a86b-4af6-bb3b-d46160859c46",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"submit-config",
+								"095f1f5b-a86b-4af6-bb3b-d46160859c46"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\": {\n    \t\"ip\": \"127.0.0.1\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/submit-config/e60a3f59-964b-4be5-b84c-cb01ebc7fa35",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"submit-config",
+								"e60a3f59-964b-4be5-b84c-cb01ebc7fa35"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Testing",
+			"description": "",
+			"item": [
+				{
+					"name": "Test",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{base_url}}/test",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"test"
 							]
 						}
 					},
