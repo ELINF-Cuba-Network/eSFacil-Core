@@ -8,10 +8,8 @@ services:
             POSTGRES_USER: postgres
             POSTGRES_DB: esFacil
             POSTGRES_PASSWORD: postgres
-
         ports:
         - "5432:5432"
-        restart: always
 
     es-facil-web:
         build: .
@@ -24,3 +22,9 @@ services:
         command: mvn clean spring-boot:run
         depends_on:
         - es-facil-pg
+
+    es-facil-redis:
+        container_name: es-facil-redis
+        image: redis
+        ports:
+            - "6380:6379"
